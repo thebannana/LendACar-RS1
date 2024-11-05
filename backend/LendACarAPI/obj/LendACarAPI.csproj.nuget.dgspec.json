@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\LendACarAPI.csproj": {}
+    "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\LendACarAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\LendACarAPI.csproj": {
+    "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\LendACarAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\LendACarAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\LendACarAPI.csproj",
         "projectName": "LendACarAPI",
-        "projectPath": "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\LendACarAPI.csproj",
+        "projectPath": "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\LendACarAPI.csproj",
         "packagesPath": "C:\\Users\\Emin Brankovic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\obj\\",
+        "outputPath": "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Emin Brankovic\\AppData\\Roaming\\NuGet\\NuGet.Config",

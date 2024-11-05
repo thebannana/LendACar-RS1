@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kJNcwJQW1HgbHD4W6b2gfqP88TuMiUgDhI8PPpnIZHsT8LzMCL8DD3ZvdiyalfzF+wstAs5+Ve8cH8X4VD0jwQ==",
+  "dgSpecHash": "UuHDE273RJqg5vl7lsKLpIerx6Q7yXHqkgv7cYVyNtlK21EUfX5Vxv+j2jFpXA5kloCvd1mIG8oli3VHtI5eYA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Emin Brankovic\\Desktop\\Helper\\LendACarAPI\\LendACarAPI.csproj",
+  "projectFilePath": "C:\\Users\\Emin Brankovic\\Desktop\\LendACar -RS1\\LendACar - Rent a car servis\\backend\\LendACarAPI\\LendACarAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Emin Brankovic\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Emin Brankovic\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
