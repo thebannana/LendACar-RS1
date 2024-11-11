@@ -1,0 +1,13 @@
+.MainHomeDiv{
+  margin: 10px 2px;
+}
+
+.MainHomeDiv>button{
+  width: 250px;
+  font-family: "Century Gothic";
+}
+
+.MainHomeDiv>button>a{
+  text-decoration: none;
+  color: white;
+}
