@@ -9,14 +9,20 @@ namespace LendACarAPI.Data.Models
         public int Id { get; set; }
         public string? EngineDisplacement { get; set; }
         public int? EnginePower { get; set; }
+        [Required]
         public string TransmissionType { get; set; }
-        public string? AirConditioning { get; set; }
+        [Required]
+        public string FuelType { get; set; }
+        [Required]
+        public bool AirConditioning { get; set; }
         public int NumberOfSeats { get; set; }
         public bool TowingHitch { get; set; }
         public string? MaximumLoad { get; set; }
         public string Description { get; set; }
+        [Required]
         public bool Avaliable { get; set; }
-        public double AverageRating { get; set; }
+        public double AverageRating { get; set; } = 0.0;
+        [Required]
         public double PricePerDay { get; set; }
 
 

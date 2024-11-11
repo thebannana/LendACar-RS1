@@ -7,9 +7,9 @@ namespace LendACarAPI.Data.Models;
 public class City
 {
     [Key]
-    public int ID { get; set; }
+    public int Id { get; set; }
     [Required]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
 
     [ForeignKey(nameof(Country))]

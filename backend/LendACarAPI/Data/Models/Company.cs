@@ -7,14 +7,19 @@ namespace LendACarAPI.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        public string CompanyName { get; set; }
-        public string CompanyDescription { get; set; }
-        public string CompanyPhone { get; set;}
-        public string CompanyEmail { get; set;}
-
-        [ForeignKey(nameof(CompanyEmployee))]
         [Required]
-        public int CompanyEmployeeId { get; set; }
-        public CompanyEmployee? CompanyEmployee { get; set; }
+        public string CompanyName { get; set; }
+        [Required]
+        public string CompanyDescription { get; set; }
+        [Required]
+        [Phone]
+        public string CompanyPhone { get; set;}
+        [EmailAddress]
+        public string? CompanyEmail { get; set;}
+        [Required]
+        public byte[] CompanyAvatar { get; set; }
+
+        public double AverageRating { get; set; } = 0.0;
+
     }
 }

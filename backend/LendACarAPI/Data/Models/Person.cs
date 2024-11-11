@@ -3,23 +3,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LendACarAPI.Data.Models
 {
-    public class Person
+    public abstract class Person
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string? FirstName { get; set; }
         [Required]
-        public string Surname { get; set; }
+        public string? LastName { get; set; }
         [Required]
-        public string PhoneNumber { get; set; }
+        [Phone]
+        public string? PhoneNumber { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }
 
-        [ForeignKey(nameof(Country))]
+        [ForeignKey(nameof(City))]
         [Required]
-        public int CountryId { get; set; }
-        public Country? Country { get; set; }
+        public int CityId { get; set; }
+        public City? City { get; set; }
 
     }
 }

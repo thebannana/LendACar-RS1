@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\CityEndpoints\" />
-    <Folder Include="Endpoints\DataSeedEndpoints\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

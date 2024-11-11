@@ -3,18 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LendACarAPI.Data.Models
 {
-    public class User
+    public class User:Person
     {
-        [Key]
-        [ForeignKey(nameof(Person))]
+
         [Required]
-        public int PersonId { get; set; }
-        public Person? Person { get; set; }
-        [Required]
+        [EmailAddress]
         public string EmailAdress { get; set; }
+        [Required]
+        public string Password { get; set; }
         [Required]
         public string Username { get; set; }
         public DateTime CreatedDate { get; set; }
+        public double AverageRating { get; set; } = 0.0;
+
+        public DriversLicense DriversLicense { get; set; }
 
     }
 }
