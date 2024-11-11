@@ -5,9 +5,6 @@ namespace LendACarAPI.Data.Models
 {
     public class CompanyReview
     {
-        [Key]
-        public int Id { get; set; }
-
         [ForeignKey(nameof(Reviewer))]
         [Required]
         public int ReviewerId { get; set; }
@@ -19,7 +16,7 @@ namespace LendACarAPI.Data.Models
         public Company? Company { get; set; }
 
         public int Rating { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime ReviewDate { get; set; }
     }
 }

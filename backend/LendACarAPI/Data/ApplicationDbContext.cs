@@ -10,8 +10,8 @@ namespace LendACarAPI.Data
     {
         public ApplicationDbContext(
         DbContextOptions options) : base(options)
-        {
-        }
+        { }
+
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -25,18 +25,28 @@ namespace LendACarAPI.Data
         public DbSet<VehicleCategory> VehicleCategories { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
         public DbSet<VehicleReview> VehicleReviews { get; set; }
+        public DbSet<VehicleImage> VehicleImages { get; set; }
         public DbSet<WorkingHour> WorkingHours { get; set; }
+        public DbSet<DriversLicense> DriversLicense { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CompanyReview>()
+                .HasKey(x => new { x.ReviewerId, x.CompanyId });
+            modelBuilder.Entity<UserReview>()
+                .HasKey(x => new { x.ReviewerId, x.UserId });
+            modelBuilder.Entity<VehicleReview>()
+                .HasKey(x => new { x.ReviewerId, x.VehicleId });
+
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Person>().UseTpcMappingStrategy();
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;
-               
             }
 
             // opcija kod nasljeđivanja

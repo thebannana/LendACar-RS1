@@ -7,7 +7,9 @@ namespace LendACarAPI.Data.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string ModelName { get; set; }
+        [Required]
         public string BrandName { get; set; }
 
         [ForeignKey(nameof(VehicleCategory))]

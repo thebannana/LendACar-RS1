@@ -5,9 +5,6 @@ namespace LendACarAPI.Data.Models
 {
     public class VehicleReview
     {
-        [Key]
-        public int Id { get; set; }
-
         [ForeignKey(nameof(Reviewer))]
         [Required]
         public int ReviewerId { get; set; }
@@ -15,7 +12,7 @@ namespace LendACarAPI.Data.Models
 
         [ForeignKey(nameof(Vehicle))]
         [Required]
-        public int VehicleID { get; set; }
+        public int VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
         [Required]
         public int Rating { get; set; }

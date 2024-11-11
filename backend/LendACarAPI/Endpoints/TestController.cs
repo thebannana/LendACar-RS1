@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LendACarAPI.Endpoints
@@ -12,5 +12,6 @@ namespace LendACarAPI.Endpoints
         {
             return "This is a test";
         }
+
     }
 }

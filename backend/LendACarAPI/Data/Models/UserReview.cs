@@ -5,10 +5,6 @@ namespace LendACarAPI.Data.Models
 {
     public class UserReview
     {
-
-        [Key]
-        public int Id { get; set; }
-
         [ForeignKey(nameof(User))]
         [Required]
         public int UserId { get; set; }
