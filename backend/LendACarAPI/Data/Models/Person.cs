@@ -17,10 +17,10 @@ namespace LendACarAPI.Data.Models
         [Required]
         public DateTime BirthDate { get; set; }
 
-        [ForeignKey(nameof(Country))]
+        [ForeignKey(nameof(City))]
         [Required]
-        public int CountryId { get; set; }
-        public Country? Country { get; set; }
+        public int CityId { get; set; }
+        public City? City { get; set; }
 
     }
 }

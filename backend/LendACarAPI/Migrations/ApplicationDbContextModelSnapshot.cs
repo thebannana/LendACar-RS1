@@ -207,7 +207,7 @@ namespace LendACarAPI.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -224,7 +224,7 @@ namespace LendACarAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable((string)null);
 
@@ -556,13 +556,13 @@ namespace LendACarAPI.Migrations
 
             modelBuilder.Entity("LendACarAPI.Data.Models.Person", b =>
                 {
-                    b.HasOne("LendACarAPI.Data.Models.Country", "Country")
+                    b.HasOne("LendACarAPI.Data.Models.City", "City")
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Country");
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("LendACarAPI.Data.Models.UserReview", b =>

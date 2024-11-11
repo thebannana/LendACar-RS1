@@ -50,7 +50,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                     LastName = "Kundo",
                     BirthDate = new DateTime(2003,11,11),
                     CreatedDate = DateTime.Now,
-                    Country = countries[0],
+                    City = cities[0],
                     PhoneNumber="123-456-7890",
                     EmailAdress="denis@edu.fit.ba"
                 },
@@ -63,7 +63,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                     LastName = "Tabak",
                     BirthDate =new DateTime(2003,11,10),
                     CreatedDate = DateTime.Now,
-                    Country = countries[0],
+                    City = cities[10],
                     PhoneNumber="123-456-7890",
                     EmailAdress="edin@edu.fit.ba"
 
@@ -77,7 +77,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                     LastName = "Brankovic",
                     BirthDate = new DateTime(2002,10,31),
                     CreatedDate = DateTime.Now,
-                    Country = countries[0],
+                    City = cities[7],
                     PhoneNumber="123-456-7890",
                     EmailAdress="emin@edu.fit.ba"
 
