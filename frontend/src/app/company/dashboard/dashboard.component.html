@@ -1,4 +1,112 @@
 <p>company dashboard works!</p>
-<div class="container col d-flex justify-content-center align-items-center">
-  <button type="button" class="btn btn-primary"><a href="http://localhost:4200/public/home">Back</a></button>
+<div class="container col" id="Body" data-bs-theme="dark">
+
+  <div class="container col d-flex justify-content-center align-items-center" id="BackDiv">
+    <button type="button" class="btn btn-primary"><a href="http://localhost:4200/public/home">Back</a></button>
+  </div>
+
+  <div class="container col d-flex justify-content-center align-items-center" id="CreateCompanyForm">
+    <button class="btn btn-primary" *ngIf="!isFormVisible" (click)="showForm()">Create Company</button>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div *ngIf="isFormVisible" class="card p-4 shadow-sm" style="max-width: 500px; width: 100%;">
+
+      <form (ngSubmit)="submitForm()">
+        <!-- Company Avatar Field -->
+        <div class="d-flex justify-content-center mb-4">
+          <label for="companyAvatar" class="avatar-upload">
+            <div class="avatar-circle" [ngStyle]="{'background-image': 'url(' + avatarPreview + ')'}">
+              <span class="plus-icon" *ngIf="!avatarPreview">+</span>
+            </div>
+            <input
+              type="file"
+              id="companyAvatar"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              class="d-none"
+            />
+          </label>
+        </div>
+
+        <!-- Company Name Field -->
+        <div class="form-group mb-3">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="companyName"
+            [(ngModel)]="companyName"
+            name="companyName"
+            placeholder="Enter company name"
+            required
+          />
+        </div>
+
+        <!-- Company Phone Field -->
+        <div class="form-group mb-3">
+          <label for="companyPhone" class="form-label">Company Phone</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="companyPhone"
+            [(ngModel)]="companyPhone"
+            name="companyPhone"
+            placeholder="Enter company phone number"
+            required
+          />
+        </div>
+
+        <!-- Company Email Field -->
+        <div class="form-group mb-3">
+          <label for="companyEmail" class="form-label">Company Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="companyEmail"
+            [(ngModel)]="companyEmail"
+            name="companyEmail"
+            placeholder="Enter company email"
+            required
+          />
+        </div>
+
+        <!-- Company Address Field -->
+        <div class="form-group mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="address"
+            [(ngModel)]="address"
+            name="address"
+            placeholder="Enter address"
+            required
+          />
+        </div>
+
+        <!-- Company Verification PDF Field -->
+        <div class="form-group mb-3">
+          <label for="companyPdf" class="form-label">Upload Verification PDF</label>
+          <input
+            type="file"
+            class="form-control"
+            id="companyPdf"
+            (change)="onPdfSelected($event)"
+            accept="application/pdf"
+            required
+          />
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-primary" style="width: 150px">Submit</button>
+          <button type="button" (click)="cancelForm()" class="btn btn-danger" style="width: 150px">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+
+

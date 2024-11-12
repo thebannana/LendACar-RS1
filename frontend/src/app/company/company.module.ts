@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CompanyRoutingModule } from './company-routing.module';
 import {LayoutComponent} from './layout/layout.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -11,9 +12,10 @@ import {DashboardComponent} from './dashboard/dashboard.component';
     LayoutComponent,
     DashboardComponent
   ],
-  imports: [
-    CommonModule,
-    CompanyRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        CompanyRoutingModule,
+        FormsModule
+    ]
 })
 export class CompanyModule { }
