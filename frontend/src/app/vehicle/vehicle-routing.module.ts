@@ -9,10 +9,10 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path:'dashboard', component:DashboardComponent},
-      {path: '**', redirectTo: 'home', pathMatch: 'full'}
+      {path: '**', redirectTo: 'home', pathMatch: 'full'},
+      {path:'vehicle-category',component: CategoryFormComponent}
     ]
-  },
-  {path:'vehicle-category',component: CategoryFormComponent},
+  }
 ];
 
 
