@@ -1,0 +1,43 @@
+<div class="text-center">
+  <main class="form-signin">
+    <form #loginForm="ngForm" (ngSubmit)="register()">
+      <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+      <div class="form-floating">
+        <input type="text" class="form-control mb-2" id="floatingFirstName" name="firsname" [(ngModel)]="model.FirstName" placeholder="Firstname">
+        <label for="floatingFirstName">Firstname</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control mb-2" id="floatingLastName" name="lastname" [(ngModel)]="model.LastName" placeholder="Lastname">
+        <label for="floatingLastName">Lastname</label>
+      </div>
+      <div class="form-floating">
+        <input type="tel" class="form-control mb-2" id="floatingPhone" name="phonenumber" [(ngModel)]="model.PhoneNumber" placeholder="Phone number">
+        <label for="floatingPhone">Phone number</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control mb-2" id="floatingInputPhone" name="birthdate" [(ngModel)]="model.BirthDate" placeholder="Birth date">
+        <label for="floatingInputPhone">BirthDate</label>
+      </div>
+      <div class="form-floating">
+        <input type="number" class="form-control mb-2" id="floatingInputCity" name="city" [(ngModel)]="model.CityId" placeholder="City">
+        <label for="floatingInputCity">City</label>
+      </div>
+      <div class="form-floating">
+        <input type="email" class="form-control mb-2" id="floatingInputEmail" name="email" [(ngModel)]="model.EmailAdress" placeholder="EmailAddress">
+        <label for="floatingInputEmail">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control mb-2" id="floatingInputUsername" name="username" [(ngModel)]="model.Username" placeholder="Username">
+        <label for="floatingInputUsername">Username</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" name="password" [(ngModel)]="model.Password" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+      <div class="text-end">
+        <button  class="w-40 btn btn-lg btn-primary mt-3 me-4" type="submit">Sign up</button>
+      </div>
+    </form>
+  </main>
+</div>
+

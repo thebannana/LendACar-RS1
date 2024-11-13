@@ -23,7 +23,7 @@ namespace LendACarAPI.DTOs
 
         [Required]
         [EmailAddress]
-        public string? EmailAdress { get; set; }
+        public string? EmailAddress { get; set; }
 
         [Required]
         public string? Username { get; set; }

@@ -32,7 +32,7 @@ namespace LendACarAPI.Endpoints
                 BirthDate = user.BirthDate,
                 City = user.City,
                 CityId = user.CityId,
-                EmailAdress = user.EmailAdress,
+                EmailAddress = user.EmailAdress,
                 Username=user.Username,
                 AverageRating = user.AverageRating,
             };
@@ -64,6 +64,34 @@ namespace LendACarAPI.Endpoints
             return Created();
         }
 
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> LoginUser([FromBody] LoginUserDto userLogin)
+        {
+            var user = await db.Users
+                .Include(u=>u.City)
+                .Include(u => u.City != null ? u.City.Country : null)
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == userLogin.Username.ToLower()
+            && u.Password == userLogin.Password);
+
+            if (user == null) return Unauthorized("Invalid credentials");
+
+            return Ok(new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = user.BirthDate,
+                City = user.City,
+                CityId = user.CityId,
+                EmailAddress = user.EmailAdress,
+                Username = user.Username,
+                AverageRating = user.AverageRating,
+            });
+        }
+
+
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> EditUser([FromBody]UserDto updatedUser,int id)
         {
@@ -74,7 +102,7 @@ namespace LendACarAPI.Endpoints
 
             user.FirstName = updatedUser.FirstName; 
             user.LastName = updatedUser.LastName;
-            user.EmailAdress = updatedUser.EmailAdress;
+            user.EmailAdress = updatedUser.EmailAddress;
             user.PhoneNumber= updatedUser.PhoneNumber;
             user.CityId = updatedUser.CityId;
 

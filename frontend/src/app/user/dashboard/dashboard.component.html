@@ -1,4 +1,36 @@
-<p>user dashboard works!</p>
+<nav class="navbar navbar-expand" aria-label="Second navbar example">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Always expand</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample02">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+      </ul>
+      @if (accountService.currentUser()==null){
+        <div>
+          <a href="http://localhost:4200/user/login" style="margin-right: 5px; text-decoration: none">Login</a>
+          <a href="http://localhost:4200/user/register" style="margin-left: 5px; text-decoration: none">Register</a>
+        </div>
+      } @else {
+        <div>
+          <a href="http://localhost:4200/user/userProfile" style="margin-right: 5px; text-decoration: none">View account</a>
+          <a (click)="logout()" style="margin-left: 5px; text-decoration: none">Logout</a>
+        </div>
+      }
+
+    </div>
+  </div>
+</nav>
+<hr>
 <div class="container col d-flex justify-content-center align-items-center">
   <button type="button" class="btn btn-primary"><a href="http://localhost:4200/public/home">Back</a></button>
 </div>
+
