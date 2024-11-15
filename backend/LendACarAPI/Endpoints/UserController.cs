@@ -144,7 +144,7 @@ namespace LendACarAPI.Endpoints
             db.Remove(user);
             await db.SaveChangesAsync();
 
-            return Ok($"User with the username {user.Username} was removed");
+            return Ok();
         }
 
 
