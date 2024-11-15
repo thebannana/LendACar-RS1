@@ -3,6 +3,10 @@ button{
   font-family: "Century Gothic";
 }
 
+.buttonForm{
+  width: 150px;
+}
+
 a{
   color: white;
 }
@@ -18,7 +22,7 @@ a{
 
 #BackDiv>button{
   margin-bottom: 50px;
-  margin: 10px 0;
+  margin-top: 200px;
 }
 
 .card {
@@ -62,3 +66,33 @@ h3 {
 .plus-icon {
   pointer-events: none;
 }
+
+#sidebar{
+  height: 100%;
+}
+
+.clickable:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Big Transparent Text Overlay */
+.no-company-overlay {
+  position: absolute;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  top: 20%;
+  z-index: 1;
+  pointer-events: none; /* Prevents interaction with the overlay */
+}
+
+
