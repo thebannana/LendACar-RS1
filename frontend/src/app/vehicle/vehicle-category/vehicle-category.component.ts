@@ -1,42 +1,48 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-vehicle-category',
+  selector: 'app-vehicle-categories',
   templateUrl: './vehicle-category.component.html',
-  styleUrl: './vehicle-category.component.css'
+  styleUrls: ['./vehicle-category.component.css']
 })
-export class CategoryFormComponent {
-  categoryForm: FormGroup;
-  selectedFile: File | null = null;
+export class VehicleCategoriesComponent {
+  vehicleCategories = [
+    { name: 'Sedan', description: 'A comfortable sedan.', icon: 'assets/sedan-icon.png' },
+    { name: 'Wagon', description: 'A spacious wagon.', icon: 'assets/wagon-icon.png' }
+  ];
 
-  constructor(private fb: FormBuilder) {
-    this.categoryForm = this.fb.group({
-      categoryName: ['', Validators.required],
-      categoryDescription: [''],
-      categoryIcon: [null, Validators.required]
-    });
-  }
+  newCategory = {
+    name: '',
+    description: '',
+    icon: ''
+  };
 
-  onFileSelected(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      this.selectedFile = fileInput.files[0];
+  addCategory() {
+    if (this.newCategory.name && this.newCategory.description && this.newCategory.icon) {
+      this.vehicleCategories.push({ ...this.newCategory });
+      this.newCategory = { name: '', description: '', icon: '' };  // Reset the form
     }
   }
 
-  onSubmit(): void {
-    if (this.categoryForm.valid) {
-      const formData = new FormData();
-      formData.append('categoryName', this.categoryForm.get('categoryName')?.value);
-      formData.append('categoryDescription', this.categoryForm.get('categoryDescription')?.value);
-      if (this.selectedFile) {
-        formData.append('categoryIcon', this.selectedFile, this.selectedFile.name);
-      }
+  editCategory(index: number) {
+    const category = this.vehicleCategories[index];
+    this.newCategory = { ...category };  // Populate the form with the existing category data
+  }
 
-      // Here you would send the formData to your backend service
-      console.log('Form submitted!', formData);
-      // e.g., this.yourService.uploadCategory(formData).subscribe(...);
+  deleteCategory(index: number) {
+    if (confirm('Are you sure you want to delete this category?')) {
+      this.vehicleCategories.splice(index, 1);
+    }
+  }
+
+  onIconChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.newCategory.icon = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 }

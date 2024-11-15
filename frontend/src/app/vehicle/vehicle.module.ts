@@ -4,20 +4,20 @@ import { CommonModule } from '@angular/common';
 import { VehicleRoutingModule } from './vehicle-routing.module';
 import {LayoutComponent} from './layout/layout.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import { CategoryFormComponent } from './vehicle-category/vehicle-category.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.component';
+import { FormsModule } from '@angular/forms'
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
     DashboardComponent,
-    CategoryFormComponent
+    VehicleCategoriesComponent
   ],
   imports: [
     CommonModule,
     VehicleRoutingModule,
-    ReactiveFormsModule
+    FormsModule
   ]
 })
 export class VehicleModule { }

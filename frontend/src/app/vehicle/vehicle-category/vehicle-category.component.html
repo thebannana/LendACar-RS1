@@ -1,36 +1,41 @@
-<div class="category-form">
-    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="categoryName">Category Name</label>
-        <input
-          type="text"
-          id="categoryName"
-          formControlName="categoryName"
-          placeholder="Enter category name"
-          required
-        />
-      </div>
-  
-      <div class="form-group">
-        <label for="categoryDescription">Category Description</label>
-        <textarea
-          id="categoryDescription"
-          formControlName="categoryDescription"
-          rows="3"
-          placeholder="Enter category description"
-        ></textarea>
-      </div>
-  
-      <div class="form-group">
-        <label for="categoryIcon">Category Icon</label>
-        <input
-          type="file"
-          id="categoryIcon"
-          (change)="onFileSelected($event)"
-          required
-        />
-      </div>
-  
-      <button type="submit" [disabled]="!categoryForm.valid">Add Category</button>
+<div class="container">
+  <h2>Vehicle Categories</h2>
+
+  <table class="vehicle-categories-table">
+    <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Description</th>
+        <th>Icon</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of vehicleCategories; let i = index">
+        <td>{{ category.name }}</td>
+        <td>{{ category.description }}</td>
+        <td><img [src]="category.icon" alt="Icon" class="category-icon" /></td>
+        <td>
+          <button (click)="editCategory(i)">Edit</button>
+          <button (click)="deleteCategory(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="add-category-form">
+    <h3>Add New Category</h3>
+    <form (ngSubmit)="addCategory()">
+      <label for="categoryName">Category Name:</label>
+      <input type="text" id="categoryName" [(ngModel)]="newCategory.name" name="categoryName" required />
+
+      <label for="categoryDescription">Category Description:</label>
+      <input type="text" id="categoryDescription" [(ngModel)]="newCategory.description" name="categoryDescription" required />
+
+      <label for="categoryIcon">Category Icon:</label>
+      <input type="file" id="categoryIcon" (change)="onIconChange($event)" name="categoryIcon" required />
+
+      <button type="submit">Add Category</button>
     </form>
   </div>
+</div>
