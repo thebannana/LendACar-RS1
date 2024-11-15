@@ -11,6 +11,7 @@ export class DashboardComponent {
 
   logout() {
     this.accountService.currentUser.set(null);
+    localStorage.removeItem('user');
   }
 }
 

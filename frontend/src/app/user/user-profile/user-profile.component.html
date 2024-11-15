@@ -22,7 +22,8 @@
             <p class="text-muted mb-1">Full Stack Developer</p>
             <p class="text-muted mb-4">{{ accountService.currentUser()?.city?.name }}, {{accountService.currentUser()?.city?.country?.name}}</p>
             <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Edit</button>
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">
+                <a href="http://localhost:4200/user/editProfile" style="text-decoration: none">Edit</a></button>
 
             </div>
           </div>

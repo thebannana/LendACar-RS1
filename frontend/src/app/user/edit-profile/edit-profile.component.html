@@ -9,7 +9,7 @@
         <hr>
       </div>
       <!-- Form START -->
-      <form class="file-upload">
+      <form #editForm="ngForm" (ngSubmit)="Update()" class="file-upload">
         <div class="row mb-5 gx-5">
           <!-- Contact detail -->
           <div class="col-xxl-8 mb-5 mb-xxl-0">
@@ -19,44 +19,48 @@
                 <!-- First Name -->
                 <div class="col-md-6">
                   <label class="form-label">First Name *</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="First name"
-                         value="{{accountService.currentUser()?.firstName}}">
+                  <input type="text" class="form-control" name="firstName" aria-label="First name"
+                         [(ngModel)]="model.firstName">
                 </div>
                 <!-- Last name -->
                 <div class="col-md-6">
                   <label class="form-label">Last Name *</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Last name"
-                         value="{{accountService.currentUser()?.lastName}}">
+                  <input type="text" class="form-control" name="lastName" aria-label="Last name"
+                         [(ngModel)]="model.lastName">
                 </div>
                 <!-- Phone number -->
                 <div class="col-md-6">
                   <label class="form-label">Phone number *</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Phone number"
-                         value="{{accountService.currentUser()?.phoneNumber}}">
+                  <input type="text" class="form-control" name="phoneNumber" aria-label="Phone number"
+                        [(ngModel)]="model.phoneNumber" >
                 </div>
                 <!-- Mobile number -->
                 <div class="col-md-6">
                   <label class="form-label">Birth date *</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Phone number"
-                         value="{{accountService.currentUser()?.birthDate}}">
+                  <input type="text" class="form-control" name="birthDate" aria-label="Phone number"
+                       [(ngModel)]="model.birthDate">
                 </div>
                 <div class="col-md-6">
                   <label for="inputEmail4" class="form-label">City *</label>
-                  <input type="email" class="form-control" id="inputCit4"
-                         value="{{accountService.currentUser()?.city?.name}}">
+<!--                  <input type="email" class="form-control" id="inputCit4"
+                         value="{{accountService.currentUser()?.city?.name}}">-->
+                  <select class="form-select" aria-label="Default select example" name="city" [(ngModel)]="model.cityId">
+                      <option *ngFor="let city of cities" id="floatingInputCity" [value]="city.id">{{city.name}}</option>
+                  </select>
+
                 </div>
 
                 <!-- Email -->
                 <div class="col-md-6">
                   <label for="inputEmail4" class="form-label">Email *</label>
-                  <input type="email" class="form-control" id="inputEmail4"
-                         value="{{accountService.currentUser()?.emailAddress}}">
+                  <input type="email" class="form-control" name="emailAddress" id="inputEmail4"
+                       [(ngModel)]="model.emailAddress">
                 </div>
                 <!-- Skype -->
                 <div class="col-md-6">
                   <label class="form-label">Username *</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Phone number"
-                         value="{{accountService.currentUser()?.username}}">
+                  <input type="text" class="form-control" name="username" aria-label="Phone number"
+                       [(ngModel)]="model.username">
                 </div>
               </div> <!-- Row END -->
             </div>
@@ -87,8 +91,8 @@
 
         <!-- button -->
         <div class="gap-3 d-md-flex justify-content-md-end text-center">
-          <button type="button" class="btn btn-danger btn-lg">Delete profile</button>
-          <button type="button" class="btn btn-primary btn-lg">Update profile</button>
+          <button type="button" class="btn btn-danger btn-lg" (click)="Delete()">Delete profile</button>
+          <button type="submit" class="btn btn-primary btn-lg">Update profile</button>
         </div>
       </form> <!-- Form END -->
     </div>

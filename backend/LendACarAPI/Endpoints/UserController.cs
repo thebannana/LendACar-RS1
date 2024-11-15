@@ -26,6 +26,7 @@ namespace LendACarAPI.Endpoints
 
             var userDto = new UserDto()
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
@@ -78,6 +79,7 @@ namespace LendACarAPI.Endpoints
 
             return Ok(new UserDto
             {
+                Id= user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
@@ -108,7 +110,26 @@ namespace LendACarAPI.Endpoints
 
             await db.SaveChangesAsync();
 
-            return NoContent();
+            var returnUser = await db.Users
+            .Include(u => u.City)
+            .Include(u => u.City != null ? u.City.Country : null)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+
+
+            return Ok(new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = user.BirthDate,
+                City = user.City,
+                CityId = user.CityId,
+                EmailAddress = user.EmailAdress,
+                Username = user.Username,
+                AverageRating = user.AverageRating,
+            });
         }
 
 

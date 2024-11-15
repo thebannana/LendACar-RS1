@@ -28,6 +28,26 @@ export class UserService {
   }
 
   Register(model:any){
-    return this.http.post(this.baseUrl+'user/register',model);
+    return this.http.post(this.baseUrl+`user/register/`,model);
   }
+
+  Update(model:any){
+    console.log(model);
+    return this.http.put<UserDto>(this.baseUrl+`user/update/${model.id}`,model).pipe(
+      map(user=>{
+        if(user){
+          localStorage.clear();
+          localStorage.setItem('user',JSON.stringify(user));
+          this.currentUser.set(user)
+          console.log("Current user set:", this.currentUser());
+        }
+        return user;
+      })
+    );
+  }
+
+  Delete(model:any){
+    return this.http.delete<string>(this.baseUrl+`user/remove/${model.id}`)
+  }
+
 }

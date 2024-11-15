@@ -19,8 +19,11 @@
         <label for="floatingInputPhone">BirthDate</label>
       </div>
       <div class="form-floating">
-        <input type="number" class="form-control mb-2" id="floatingInputCity" name="city" [(ngModel)]="model.CityId" placeholder="City">
-        <label for="floatingInputCity">City</label>
+        <select class="form-select" aria-label="Default select example" name="city" [(ngModel)]="model.CityId">
+          @for (city of cities; track city.id){
+            <option  id="floatingInputCity" value="{{city.id}}">{{city.name}}</option>
+          }
+        </select>
       </div>
       <div class="form-floating">
         <input type="email" class="form-control mb-2" id="floatingInputEmail" name="email" [(ngModel)]="model.EmailAdress" placeholder="EmailAddress">

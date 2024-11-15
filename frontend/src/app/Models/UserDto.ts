@@ -1,7 +1,7 @@
 import {City} from './City';
 
 export interface UserDto {
-
+  id:number;
   firstName: string;
   lastName: string;
   phoneNumber: string;
