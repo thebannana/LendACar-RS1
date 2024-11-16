@@ -100,6 +100,15 @@ export class DashboardComponent implements OnInit {
     if (currentUser) {
       this.username = currentUser.username;
       this.userId = currentUser.id;
+      // Fetch company data when the component is initialized
+      this.companyService.getCompanyByUserId(this.userId).subscribe((company) => {
+        // Populate form with fetched company data
+        this.companyName = company.companyName;
+        this.companyPhone = company.companyPhone;
+        this.companyEmail = company.companyEmail;
+        this.companyDescription = company.companyDescription;
+        this.address = company.companyAddress;
+      });
 
       console.log('isLoggedIn:', this.isLoggedIn);
       console.log('hasCompany:', this.hasCompany);
@@ -223,6 +232,9 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteCompany(): void {
+    const isConfirmed = window.confirm('Are you sure you want to delete the company?');
+
+    if(isConfirmed){
     if (!this.userId) {
       console.error('User not logged in.');
       return;
@@ -239,6 +251,7 @@ export class DashboardComponent implements OnInit {
         console.error('Error deleting company:', error);
       }
     );
+    }
   }
 
   editCompany(): void {
@@ -272,32 +285,36 @@ export class DashboardComponent implements OnInit {
   }
 
   updateCompany(): void {
-    const updatedCompanyData = {
-      companyName: this.companyName,
-      companyPhone: this.companyPhone,
-      companyEmail: this.companyEmail,
-      companyDescription: this.companyDescription,
-      companyAddress: this.address,
-      userId: this.userId, // Use UserId to identify the company
-      companyAvatar: this.selectedFileName // Attach the selected file here
-    };
+    const isConfirmed = window.confirm('Are you sure you want to update the company?');
+    if(isConfirmed) {
+      const updatedCompanyData = {
+        companyName: this.companyName,
+        companyPhone: this.companyPhone,
+        companyEmail: this.companyEmail,
+        companyDescription: this.companyDescription,
+        companyAddress: this.address,
+        userId: this.userId, // Use UserId to identify the company
+        companyAvatar: this.selectedFileName // Attach the selected file here
+      };
 
-    this.companyService.updateCompanyByUserId(this.userId, updatedCompanyData).subscribe(
-      () => {
-        console.log('Company updated successfully.');
-        this.updateFormVisible = false; // Hide the update form
-        window.location.reload(); // Refresh the page
-      },
-      (error) => {
-        console.error('Error updating company:', error);
-        if (error.status === 400 && error.error && error.error.errors) {
-          console.log('Validation errors:', error.error.errors);
-          Object.entries(error.error.errors).forEach(([field, messages]) => {
-            console.error(`Validation error on ${field}:`, messages);
-          });
+      this.companyService.updateCompanyByUserId(this.userId, updatedCompanyData).subscribe(
+        () => {
+          console.log('Company updated successfully.');
+          this.updateFormVisible = false; // Hide the update form
+          window.location.reload(); // Refresh the page
+        },
+        (error) => {
+          console.error('Error updating company:', error);
+          if (error.status === 400 && error.error && error.error.errors) {
+            console.log('Validation errors:', error.error.errors);
+            Object.entries(error.error.errors).forEach(([field, messages]) => {
+              window.alert(`All fields are required. The field ${field} is empty`);
+              console.error(`Validation error on ${field}:`, messages);
+            });
+          }
         }
-      }
-    );
+      );
+    }
   }
 
 
