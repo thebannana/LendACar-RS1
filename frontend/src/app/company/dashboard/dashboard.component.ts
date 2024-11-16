@@ -254,29 +254,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  editCompany(): void {
-    if (!this.userId) {
-      console.error('User not logged in.');
-      return;
-    }
-
-    // Fetch the company details to pre-fill the form
-    this.companyService.getCompanyByUserId(this.userId).subscribe(
-      (company) => {
-        this.companyName = company.companyName;
-        this.companyPhone = company.companyPhone;
-        this.companyEmail = company.companyEmail;
-        this.companyDescription = company.companyDescription;
-        this.address = company.companyAddress;
-        this.avatarPreview = company.companyAvatar ? `data:image/png;base64,${company.companyAvatar}` : null;
-        this.updateFormVisible = true; // Show the update form
-      },
-      (error) => {
-        console.error('Error fetching company details:', error);
-      }
-    );
-  }
-
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
