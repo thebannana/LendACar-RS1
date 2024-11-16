@@ -4,6 +4,7 @@ using LendACarAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LendACarAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116142151_CompanyUpdated")]
+    partial class CompanyUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +65,7 @@ namespace LendACarAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("CompanyAvatar")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("CompanyDescription")
@@ -79,12 +83,7 @@ namespace LendACarAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Companies");
                 });
@@ -503,17 +502,6 @@ namespace LendACarAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("LendACarAPI.Data.Models.Company", b =>
-                {
-                    b.HasOne("LendACarAPI.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LendACarAPI.Data.Models.CompanyEmployee", b =>

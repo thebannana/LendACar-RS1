@@ -50,4 +50,8 @@ export class UserService {
     return this.http.delete<string>(this.baseUrl+`user/remove/${model.id}`)
   }
 
+  // Getter to access current user
+  getCurrentUser() {
+    return this.currentUser();
+  }
 }

@@ -1,30 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+// CompanyCreateRequest.cs
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace LendACarAPI.Data.Models
 {
-    public class Company
+    public class CompanyCreateRequest
     {
-        [Key]
-        public int Id { get; set; }
-        public byte[]? CompanyAvatar { get; set; }
         [Required]
         public string CompanyName { get; set; }
+
         [Required]
         [Phone]
         public string CompanyPhone { get; set; }
+
         [Required]
         public string CompanyDescription { get; set; }
 
         [EmailAddress]
-        public string? CompanyEmail { get; set;}
+        public string? CompanyEmail { get; set; }
+
         [Required]
         public string CompanyAddress { get; set; }
 
-        public double AverageRating { get; set; } = 0.0;
-
+        [Required]
         public int UserId { get; set; }
-        public User User { get; set; }  // Assuming you have a User model
 
+        public IFormFile? CompanyAvatar { get; set; } // File upload for company avatar (optional)
     }
 }

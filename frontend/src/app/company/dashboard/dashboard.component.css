@@ -39,6 +39,11 @@ h3 {
   color: #333;
 }
 
+a{
+  margin-top: 5px;
+}
+
+
 /* Avatar upload styles */
 .avatar-upload {
   position: relative;
@@ -72,7 +77,10 @@ h3 {
 }
 
 .clickable:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.dropdown-item{
   cursor: pointer;
 }
 
@@ -93,6 +101,16 @@ h3 {
   top: 20%;
   z-index: 1;
   pointer-events: none; /* Prevents interaction with the overlay */
+}
+
+.btn-warning {
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
 }
 
 
