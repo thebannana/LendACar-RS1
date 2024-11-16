@@ -5,7 +5,6 @@ interface VehicleCategory {
   id?: number;
   name: string;
   description: string;
-  vehicleCategoryIconBase64: string;
 }
 
 @Component({
@@ -15,11 +14,11 @@ interface VehicleCategory {
 })
 export class VehicleCategoriesComponent implements OnInit {
   vehicleCategories: VehicleCategory[] = [];
-  newCategory: VehicleCategory = { name: '', description: '', vehicleCategoryIconBase64: '' };
+  newCategory: VehicleCategory = { name: '', description: '' };
   editMode = false;
   editCategoryId: number | null = null;
 
-  private apiUrl = 'http://localhost:7000/swagger/api/VehicleCategory'; // Adjust as necessary
+  private apiUrl = 'http://localhost:7000/api/VehicleCategory'; // Adjust as necessary
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +27,7 @@ export class VehicleCategoriesComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.http.get<VehicleCategory[]>(`${this.apiUrl}`).subscribe(
+    this.http.get<VehicleCategory[]>(`${this.apiUrl}/get`).subscribe(
       (categories) => (this.vehicleCategories = categories),
       (error) => console.error('Failed to fetch categories:', error)
     );
@@ -82,14 +81,13 @@ export class VehicleCategoriesComponent implements OnInit {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.newCategory.vehicleCategoryIconBase64 = (reader.result as string).split(',')[1]; // Extract base64
+
       };
       reader.readAsDataURL(file);
     }
   }
 
   resetForm(): void {
-    this.newCategory = { name: '', description: '', vehicleCategoryIconBase64: '' };
     this.editMode = false;
     this.editCategoryId = null;
   }

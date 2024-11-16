@@ -13,6 +13,13 @@ namespace LendACarAPI.Endpoints
     [ApiController]
     public class VehicleCategoryController(ApplicationDbContext db) : ControllerBase
     {
+        [HttpGet("get")]
+        public async Task<ActionResult<VehicleCategory[]>> GetAllCategories()
+        {
+            var categories = await db.VehicleCategories.ToArrayAsync();
+            return Ok(categories);
+        }
+
         [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetVehicleCategoryById(int id)
         {
@@ -25,7 +32,7 @@ namespace LendACarAPI.Endpoints
                 Id = vehicleCategory.Id,
                 Name = vehicleCategory.Name,
                 Description = vehicleCategory.Description,
-                VehicleCategoryIconBase64 = Convert.ToBase64String(vehicleCategory.VehicleCategoryIcon)
+                //VehicleCategoryIconBase64 = Convert.ToBase64String(vehicleCategory.VehicleCategoryIcon)
             };
 
             return Ok(vehicleCategoryDto);
@@ -41,7 +48,7 @@ namespace LendACarAPI.Endpoints
             {
                 Name = vehicleCategoryDto.Name,
                 Description = vehicleCategoryDto.Description,
-                VehicleCategoryIcon = Convert.FromBase64String(vehicleCategoryDto.VehicleCategoryIconBase64)
+                //VehicleCategoryIcon = Convert.FromBase64String(vehicleCategoryDto.VehicleCategoryIconBase64)
             };
 
             db.VehicleCategories.Add(newVehicleCategory);
@@ -59,7 +66,7 @@ namespace LendACarAPI.Endpoints
 
             vehicleCategory.Name = updatedCategoryDto.Name;
             vehicleCategory.Description = updatedCategoryDto.Description;
-            vehicleCategory.VehicleCategoryIcon = Convert.FromBase64String(updatedCategoryDto.VehicleCategoryIconBase64);
+            //vehicleCategory.VehicleCategoryIcon = Convert.FromBase64String(updatedCategoryDto.VehicleCategoryIconBase64);
 
             await db.SaveChangesAsync();
 
@@ -68,7 +75,7 @@ namespace LendACarAPI.Endpoints
                 Id = vehicleCategory.Id,
                 Name = vehicleCategory.Name,
                 Description = vehicleCategory.Description,
-                VehicleCategoryIconBase64 = Convert.ToBase64String(vehicleCategory.VehicleCategoryIcon)
+                //VehicleCategoryIconBase64 = Convert.ToBase64String(vehicleCategory.VehicleCategoryIcon)
             });
         }
 
