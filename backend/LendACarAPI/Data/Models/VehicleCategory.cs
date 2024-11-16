@@ -9,7 +9,7 @@ namespace LendACarAPI.Data.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required]
+        //[Required]
         public byte[] VehicleCategoryIcon { get; set; }
 
     }

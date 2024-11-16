@@ -84,10 +84,17 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                 },
             };
 
+            var vehicleCategories = new List<VehicleCategory>
+            {
+                new VehicleCategory { Name = "Sedan" , Description = "Perfect blend of style, comfort and sportiness."},
+                new VehicleCategory { Name = "Hatchback" , Description = "Compact vehicle perfect for urban places."},
+            };
+
             // Dodavanje podataka u bazu
             await db.Countries.AddRangeAsync(countries, cancellationToken);
             await db.Cities.AddRangeAsync(cities, cancellationToken);
             await db.Users.AddRangeAsync(users, cancellationToken);
+            await db.VehicleCategories.AddRangeAsync(vehicleCategories, cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
 
             return "Data generation completed successfully.";

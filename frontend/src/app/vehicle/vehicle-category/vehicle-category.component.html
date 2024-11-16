@@ -14,28 +14,58 @@
       <tr *ngFor="let category of vehicleCategories; let i = index">
         <td>{{ category.name }}</td>
         <td>{{ category.description }}</td>
-        <td><img [src]="category.icon" alt="Icon" class="category-icon" /></td>
         <td>
-          <button (click)="editCategory(i)">Edit</button>
-          <button (click)="deleteCategory(i)">Delete</button>
+          <img
+            [src]="'data:image/png;base64,' + category.vehicleCategoryIconBase64"
+            alt="Icon"
+            class="category-icon"
+          />
+        </td>
+        <td>
+          <button (click)="editCategory(category)">Edit</button>
+          <button (click)="deleteCategory(category.id!)">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
 
   <div class="add-category-form">
-    <h3>Add New Category</h3>
-    <form (ngSubmit)="addCategory()">
+    <h3>{{ editMode ? 'Edit Category' : 'Add New Category' }}</h3>
+    <form (ngSubmit)="saveCategory()">
       <label for="categoryName">Category Name:</label>
-      <input type="text" id="categoryName" [(ngModel)]="newCategory.name" name="categoryName" required />
+      <input
+        type="text"
+        id="categoryName"
+        [(ngModel)]="newCategory.name"
+        name="categoryName"
+        required
+      />
 
       <label for="categoryDescription">Category Description:</label>
-      <input type="text" id="categoryDescription" [(ngModel)]="newCategory.description" name="categoryDescription" required />
+      <input
+        type="text"
+        id="categoryDescription"
+        [(ngModel)]="newCategory.description"
+        name="categoryDescription"
+        required
+      />
 
       <label for="categoryIcon">Category Icon:</label>
-      <input type="file" id="categoryIcon" (change)="onIconChange($event)" name="categoryIcon" required />
+      <input
+        type="file"
+        id="categoryIcon"
+        (change)="onIconChange($event)"
+        name="categoryIcon"
+        [required]="!editMode"
+      />
 
-      <button type="submit">Add Category</button>
+      <button type="submit">{{ editMode ? 'Update Category' : 'Save Category' }}</button>
     </form>
   </div>
+</div>
+
+<div class="container d-flex align-items-center">
+  <button type="button" class="btn btn-primary btn-sm">
+    <a href="http://localhost:4200/vehicle/dashboard" class="btn-link">Back</a>
+  </button>
 </div>
