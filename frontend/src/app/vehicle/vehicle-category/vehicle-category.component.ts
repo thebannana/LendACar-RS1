@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isElementAccessExpression } from 'typescript';
 
 interface VehicleCategory {
   id?: number;
@@ -88,7 +89,18 @@ export class VehicleCategoriesComponent implements OnInit {
   }
 
   resetForm(): void {
+    this.newCategory = { name: '', description: '' };
     this.editMode = false;
     this.editCategoryId = null;
+  }
+
+  saveButton(): void{
+    if(this.editMode == true)
+    {
+      this.updateCategory();
+    }
+    else{
+      this.addCategory();
+    }
   }
 }
