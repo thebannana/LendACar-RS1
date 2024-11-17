@@ -28,12 +28,12 @@ export class CompanyService {
     formData.append('companyPhone', companyData.companyPhone);
     formData.append('companyDescription', companyData.companyDescription);
     formData.append('companyEmail', companyData.companyEmail);
-    formData.append('companyAddress', companyData.companyAddress);
+    formData.append('companyAddress', companyData.address);
     formData.append('userId', companyData.userId.toString());
 
     // Append the avatar image if it's provided
     if (companyData.companyAvatar) {
-      formData.append('companyAvatar', companyData.companyAvatar, companyData.companyAvatar.name);
+      formData.append('companyAvatar', companyData.avatar, companyData.avatar.name);
     }
 
     return this.http.post<any>(`http://localhost:7000/api/company/create`, formData);
