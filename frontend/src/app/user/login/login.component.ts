@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {LoginUserDto} from '../../Models/LoginUserDto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +11,14 @@ import {LoginUserDto} from '../../Models/LoginUserDto';
 export class LoginComponent {
 accountService=inject(UserService);
   model:any={};
+  router=inject(Router);
 
   login() {
     this.accountService.Login(this.model).subscribe({
       next:res=>{
+        alert("User login successfully");
         console.log(res);
+        void this.router.navigateByUrl('/user/dashboard');
       },
       error:err=>console.log(err)
     })

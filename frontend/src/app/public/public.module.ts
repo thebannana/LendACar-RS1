@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PublicRoutingModule } from './public-routing.module';
 import {HomeComponent} from './home/home.component';
 import {LayoutComponent} from './layout/layout.component';
+import {DataRowOutlet} from "@angular/cdk/table";
 
 
 @NgModule({
@@ -11,9 +12,10 @@ import {LayoutComponent} from './layout/layout.component';
     HomeComponent,
     LayoutComponent
   ],
-  imports: [
-    CommonModule,
-    PublicRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        PublicRoutingModule,
+        DataRowOutlet
+    ]
 })
 export class PublicModule { }

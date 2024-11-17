@@ -37,7 +37,7 @@
                 <!-- Mobile number -->
                 <div class="col-md-6">
                   <label class="form-label">Birth date *</label>
-                  <input type="text" class="form-control" name="birthDate" aria-label="Phone number"
+                  <input type="text" disabled class="form-control" name="birthDate" aria-label="Phone number"
                        [(ngModel)]="model.birthDate">
                 </div>
                 <div class="col-md-6">
@@ -53,13 +53,13 @@
                 <!-- Email -->
                 <div class="col-md-6">
                   <label for="inputEmail4" class="form-label">Email *</label>
-                  <input type="email" class="form-control" name="emailAddress" id="inputEmail4"
+                  <input type="email" disabled class="form-control" name="emailAddress" id="inputEmail4"
                        [(ngModel)]="model.emailAddress">
                 </div>
                 <!-- Skype -->
                 <div class="col-md-6">
                   <label class="form-label">Username *</label>
-                  <input type="text" class="form-control" name="username" aria-label="Phone number"
+                  <input type="text" disabled class="form-control" name="username" aria-label="Phone number"
                        [(ngModel)]="model.username">
                 </div>
               </div> <!-- Row END -->
@@ -95,6 +95,7 @@
           <button type="submit" class="btn btn-primary btn-lg">Update profile</button>
         </div>
       </form> <!-- Form END -->
+      <button type="button" class="btn btn-primary" routerLink="/user/userProfile">Back</button>
     </div>
   </div>
 </div>

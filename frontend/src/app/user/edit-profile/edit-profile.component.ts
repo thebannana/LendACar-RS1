@@ -3,6 +3,7 @@ import {UserService} from '../../services/user.service';
 import {CityService} from '../../services/city.service';
 import {City} from '../../Models/City';
 import {UserDto} from '../../Models/UserDto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -21,28 +22,32 @@ export class EditProfileComponent implements OnInit {
       }
       accountService=inject(UserService);
       cityService=inject(CityService);
+      router=inject(Router);
 
   Update() {
     console.log("Ovo prije update");
     console.log(this.model);
     this.accountService.Update(this.model).subscribe({
-      next: result => {console.log("Ovo je poslije"); console.log(result)},
+      next: result => {console.log("Ovo je poslije"); console.log(result); window.location.reload();},
       error: err => console.log(err)
     })
   }
 
   Delete() {
-    this.accountService.Delete(this.model).subscribe({
-      next: result => {
-        console.log(result);
-        this.accountService.currentUser.set(null);
-        localStorage.removeItem('user');
-      },
-      error: err => {
-        console.log(err);
-        this.accountService.currentUser.set(null);
-        localStorage.removeItem('user');
-      }
-    })
+    if(window.confirm("Are you sure you want to delete account?")){
+        this.accountService.Delete(this.model).subscribe({
+          next: result => {
+            console.log(result);
+            this.accountService.currentUser.set(null);
+            localStorage.removeItem('user');
+            void this.router.navigateByUrl('/user/dashboard');
+          },
+          error: err => {
+            console.log(err);
+            this.accountService.currentUser.set(null);
+            localStorage.removeItem('user');
+          }
+      })
+    }
   }
 }

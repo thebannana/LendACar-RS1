@@ -4,8 +4,8 @@
       <div class="col">
         <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item"><a routerLink="/public/home">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/user/dashboard">User</a></li>
             <li class="breadcrumb-item active" aria-current="page">User Profile</li>
           </ol>
         </nav>
@@ -22,8 +22,8 @@
             <p class="text-muted mb-1">Full Stack Developer</p>
             <p class="text-muted mb-4">{{ accountService.currentUser()?.city?.name }}, {{accountService.currentUser()?.city?.country?.name}}</p>
             <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">
-                <a href="http://localhost:4200/user/editProfile" style="text-decoration: none">Edit</a></button>
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
+                       routerLink="/user/editProfile">Edit</button>
 
             </div>
           </div>

@@ -21,8 +21,8 @@
         </div>
       } @else {
         <div>
-          <a href="http://localhost:4200/user/userProfile" style="margin-right: 5px; text-decoration: none">View account</a>
-          <a (click)="logout()" style="margin-left: 5px; text-decoration: none">Logout</a>
+          <a routerLink="/user/userProfile" style="margin-right: 5px; text-decoration: none">View account</a>
+          <a (click)="logout()" style="margin-left: 5px; text-decoration: none; cursor: pointer">Logout</a>
         </div>
       }
 
@@ -31,6 +31,6 @@
 </nav>
 <hr>
 <div class="container col d-flex justify-content-center align-items-center">
-  <button type="button" class="btn btn-primary"><a href="http://localhost:4200/public/home">Back</a></button>
+  <button type="button" class="btn btn-primary" routerLink="/public/home">Back</button>
 </div>
 
