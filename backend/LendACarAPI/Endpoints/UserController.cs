@@ -51,7 +51,7 @@ namespace LendACarAPI.Endpoints
                 FirstName= user.FirstName,
                 LastName= user.LastName,
                 PhoneNumber= user.PhoneNumber,
-                BirthDate = user.BirthDate,
+                BirthDate =DateTime.Parse(user.BirthDate),
                 CityId = user.CityId,
                 EmailAdress = user.EmailAdress,
                 Username=user.Username,

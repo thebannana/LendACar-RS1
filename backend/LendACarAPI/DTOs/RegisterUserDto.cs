@@ -16,7 +16,7 @@ namespace LendACarAPI.DTOs
         public string? PhoneNumber { get; set; }
 
         [Required]
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
 
         public int CityId { get; set; }
 
