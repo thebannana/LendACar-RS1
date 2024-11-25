@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {LoginComponent} from './user/login/login.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'company',
     loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
+  },
+  {
+    path:'employee',
+    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
   },
   {path: '**', redirectTo: 'public', pathMatch: 'full'}
 ];

@@ -6,10 +6,14 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LayoutComponent } from './layout/layout.component';
+//import { DashboardComponent } from './employee/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LayoutComponent,
+    //DashboardComponent,
   ],
   imports: [
     BrowserModule,
