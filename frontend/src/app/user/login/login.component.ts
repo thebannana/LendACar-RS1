@@ -12,6 +12,7 @@ export class LoginComponent {
 accountService=inject(UserService);
   model:any={};
   router=inject(Router);
+  passwordShow:boolean=false;
 
   login() {
     this.accountService.Login(this.model).subscribe({
