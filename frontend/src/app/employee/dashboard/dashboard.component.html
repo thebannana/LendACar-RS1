@@ -28,8 +28,10 @@
       </div>
     </nav>
     <div>
-      <span class="me-3" routerLink="/employee/profileOverview" style="cursor: pointer; font-weight: bold" >John Doe</span>
-      <button class="btn btn-sm btn-outline-light" routerLink="/employee/login">Logout</button>
+      <span class="me-3" routerLink="/employee/profileOverview" style="cursor: pointer; font-weight: bold">
+        {{employeeService.currentEmployee()?.firstName}} {{employeeService.currentEmployee()?.lastName}}
+      </span>
+      <button class="btn btn-sm btn-outline-light" routerLink="/employee/login" (click)="logout()">Logout</button>
     </div>
   </div>
 </header>

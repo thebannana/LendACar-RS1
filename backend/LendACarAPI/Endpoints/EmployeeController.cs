@@ -52,7 +52,7 @@ namespace LendACarAPI.Endpoints
             .Include(e=> e.WorkingHour)
             .FirstOrDefaultAsync(e => e.EmailAdress.ToLower() == employeeLogin.EmailAddress.ToLower());
 
-            if(employeeLogin == null)
+            if(employee == null)
                 return Unauthorized("Invalid credentials");
 
             var hmac = new HMACSHA256(employee.PasswordSalt);
@@ -83,9 +83,6 @@ namespace LendACarAPI.Endpoints
 
         }
         
-
-
-
 
         private async Task<bool> EmployeeExists(string username, string email)
         {

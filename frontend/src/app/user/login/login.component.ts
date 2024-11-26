@@ -21,7 +21,10 @@ accountService=inject(UserService);
         console.log(res);
         void this.router.navigateByUrl('/user/dashboard');
       },
-      error:err=>console.log(err)
+      error:err=>{
+        alert("Invalid login credentials");
+        console.log(err);
+      }
     })
     console.log(this.accountService.currentUser());
     console.log("Login 2");
