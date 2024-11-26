@@ -82,9 +82,16 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                 new VehicleCategory { Name = "Hatchback" , Description = "Compact vehicle perfect for urban places."},
             };
 
+            var workingHours = new List<WorkingHour>
+            {
+                new WorkingHour{StartTime=new TimeOnly(9,00),EndTime=new TimeOnly(17,00),Saturday=false,Sunday=false},
+                new WorkingHour{StartTime=new TimeOnly(8,00),EndTime=new TimeOnly(16,00),Saturday=false,Sunday=false},
+                new WorkingHour{StartTime=new TimeOnly(9,30),EndTime=new TimeOnly(18,00),Sunday=false},
+            };
             // Dodavanje podataka u bazu
             await db.Countries.AddRangeAsync(countries, cancellationToken);
             await db.Cities.AddRangeAsync(cities, cancellationToken);
+            await db.WorkingHours.AddRangeAsync(workingHours, cancellationToken);
 
             await db.VehicleCategories.AddRangeAsync(vehicleCategories, cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
