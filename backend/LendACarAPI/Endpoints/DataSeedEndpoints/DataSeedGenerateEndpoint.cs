@@ -12,7 +12,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
         [HttpPost]
         public async Task<string> DataSeedGeneration(CancellationToken cancellationToken = default)
         {
-            // Kreiranje država
+            //Kreiranje država
             var countries = new List<Country>
             {
                 new Country { Name = "Bosnia and Herzegovina" },
@@ -22,7 +22,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                 new Country { Name = "USA" }
             };
 
-            // Kreiranje gradova
+            //// Kreiranje gradova
             var cities = new List<City>
             {
                 new City { Name = "Sarajevo", Country = countries[0] },
@@ -39,50 +39,42 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                 new City { Name = "Los Angeles", Country = countries[4] }
             };
 
-            // Kreiranje korisnika s ulogama
-            //var users = new List<User>
-            //{
-            //    new User
-            //    {
-            //        Username = "KalloX",
-            //        Password = "password",
-            //        FirstName = "Denis",
-            //        LastName = "Kundo",
-            //        BirthDate = new DateTime(2003,11,11),
-            //        CreatedDate = DateTime.Now,
-            //        City = cities[0],
-            //        PhoneNumber="123-456-7890",
-            //        EmailAdress="denis@edu.fit.ba"
-            //    },
 
-            //    new User
-            //    {
-            //        Username = "LedoSlav",
-            //        Password = "password",
-            //        FirstName = "Edin",
-            //        LastName = "Tabak",
-            //        BirthDate =new DateTime(2003,11,10),
-            //        CreatedDate = DateTime.Now,
-            //        City = cities[10],
-            //        PhoneNumber="123-456-7890",
-            //        EmailAdress="edin@edu.fit.ba"
+            var controller = new UserController(db);
+            await controller.RegisterUser(new DTOs.RegisterUserDto
+            {
+                Username = "KalloX",
+                Password = "password",
+                FirstName = "Denis",
+                LastName = "Kundo",
+                BirthDate = new DateTime(2003, 11, 11).ToString("dd.MM.yyyy"),
+                CityId = 2,
+                PhoneNumber = "123-456-7890",
+                EmailAdress = "denis@edu.fit.ba"
+            });
+            await controller.RegisterUser(new DTOs.RegisterUserDto
+            {
+                Username = "LedoSlav",
+                Password = "password",
+                FirstName = "Edin",
+                LastName = "Tabak",
+                BirthDate = new DateTime(2003, 11, 10).ToString("dd.MM.yyyy"),
+                CityId = 10,
+                PhoneNumber = "123-456-7890",
+                EmailAdress = "edin@edu.fit.ba"
+            });
 
-            //    },
-
-            //    new User
-            //    {
-            //        Username = "Vaha",
-            //        Password = "password",
-            //        FirstName = "Emin", 
-            //        LastName = "Brankovic",
-            //        BirthDate = new DateTime(2002,10,31),
-            //        CreatedDate = DateTime.Now,
-            //        City = cities[7],
-            //        PhoneNumber="123-456-7890",
-            //        EmailAdress="emin@edu.fit.ba"
-
-            //    },
-            //};
+            await controller.RegisterUser(new DTOs.RegisterUserDto
+            {
+                Username = "Vaha",
+                Password = "password",
+                FirstName = "Emin",
+                LastName = "Brankovic",
+                BirthDate = new DateTime(2002, 10, 31).ToString("dd.MM.yyyy"),
+                CityId = 7,
+                PhoneNumber = "123-456-7890",
+                EmailAdress = "emin@edu.fit.ba"
+            });
 
             var vehicleCategories = new List<VehicleCategory>
             {
@@ -93,7 +85,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
             // Dodavanje podataka u bazu
             await db.Countries.AddRangeAsync(countries, cancellationToken);
             await db.Cities.AddRangeAsync(cities, cancellationToken);
-            //await db.Users.AddRangeAsync(users, cancellationToken);
+
             await db.VehicleCategories.AddRangeAsync(vehicleCategories, cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
 
