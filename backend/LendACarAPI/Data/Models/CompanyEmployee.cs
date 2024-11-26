@@ -21,6 +21,10 @@ namespace LendACarAPI.Data.Models
         [ForeignKey(nameof(Company))]
         [Required]
         public int CompanyId { get; set; }
-        public Company Company { get; set; }     
+        public Company Company { get; set; }
+
+        [ForeignKey(nameof(WorkingHour))]
+        public int WorkingHourId { get; set; }
+        public WorkingHour? WorkingHour { get; set; }
     }
 }

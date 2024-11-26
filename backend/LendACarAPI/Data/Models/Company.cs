@@ -23,8 +23,9 @@ namespace LendACarAPI.Data.Models
 
         public double AverageRating { get; set; } = 0.0;
 
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-        public User User { get; set; }  // Assuming you have a User model
+        public User? User { get; set; } 
 
     }
 }

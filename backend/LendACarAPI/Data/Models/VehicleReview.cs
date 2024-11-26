@@ -16,7 +16,7 @@ namespace LendACarAPI.Data.Models
         public Vehicle? Vehicle { get; set; }
         [Required]
         public int Rating { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime ReviewDate { get; set; }
     }
 }

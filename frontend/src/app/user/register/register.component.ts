@@ -23,6 +23,9 @@ export class RegisterComponent implements OnInit {
   accountService=inject(UserService);
   cityService=inject(CityService);
   router=inject(Router);
+  passwordShow: boolean=false;
+  passwordCheck:any;
+  passwordSame:boolean=true;
 
   register() {
     console.log(this.model);
@@ -34,5 +37,12 @@ export class RegisterComponent implements OnInit {
       },
       error: err => console.log(err)
     })
+  }
+
+  ComparePassword() {
+      if(this.model.Password!==this.passwordCheck)
+        this.passwordSame=false;
+      else
+        this.passwordSame=true;
   }
 }

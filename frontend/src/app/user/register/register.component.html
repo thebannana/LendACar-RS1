@@ -34,10 +34,22 @@
         <label for="floatingInputUsername">Username</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="password" [(ngModel)]="model.Password" placeholder="Password">
+        <input [type]="passwordShow ? 'text': 'password' " class="form-control mb-2" id="floatingPassword" name="password" [(ngModel)]="model.Password" placeholder="Password">
         <label for="floatingPassword">Password</label>
       </div>
-      <div class="text-end">
+      <div class="form-floating">
+        <input [type]="passwordShow ? 'text': 'password' " class="form-control mb-2" id="floatingPasswordRepeat"
+              (input)="ComparePassword()" name="password" [(ngModel)]="passwordCheck" placeholder="Password">
+        <label for="floatingPassword">Repeat password</label>
+      </div>
+      <div class="d-flex" *ngIf="!passwordSame">
+        <span class="text-danger">Password don't match</span>
+      </div>
+      <div class="d-flex justify-content-begin">
+        <input [(ngModel)]="passwordShow" type="checkbox" id="check" name="showPassword"/>
+        <label class="form-label px-2" for="check">Show password</label>
+      </div>
+      <div class="text-end" >
         <button  class="w-40 btn btn-lg btn-primary mt-3 me-4" type="submit">Sign up</button>
       </div>
     </form>

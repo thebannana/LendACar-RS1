@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LendACarAPI.Data.Models
 {
+
+    //TO DO:
+    //Napraviti Address objekat i dodati ti ga u Person
+    // Address bi mogao sadrzati grad pa onda na frontendu display to sve zajedno ali kada se profi pravi da bude odvojeno 
     public abstract class Person
     {
         [Key]

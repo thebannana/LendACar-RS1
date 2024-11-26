@@ -28,7 +28,7 @@ namespace LendACarAPI.Data
         public DbSet<VehicleImage> VehicleImages { get; set; }
         public DbSet<WorkingHour> WorkingHours { get; set; }
         public DbSet<DriversLicense> DriversLicense { get; set; }
-
+        public DbSet<Employee> Employees { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

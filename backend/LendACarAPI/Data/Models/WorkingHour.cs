@@ -3,11 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LendACarAPI.Data.Models
 {
+
+    //TO DO:
+    //Promijeniti start time i end time u timeonly objete i skloniti ovo za companyemployee i dodati workinghour u companyemployee
     public class WorkingHour
     {
+        [Key]
         public int Id { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        [Required]
+        public TimeOnly StartTime { get; set; }
+        [Required]
+        public TimeOnly EndTime { get; set; }
 
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
@@ -16,9 +22,5 @@ namespace LendACarAPI.Data.Models
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
-
-        [ForeignKey(nameof(CompanyEmployee))]
-        public int CompanyEmployeeId { get; set; }
-        public CompanyEmployee? CompanyEmployee { get; set; }
     }
 }

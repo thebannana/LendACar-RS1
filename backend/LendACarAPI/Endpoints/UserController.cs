@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LendACarAPI.Endpoints
 {
@@ -46,16 +48,20 @@ namespace LendACarAPI.Endpoints
         {
             if (await UserExists(user.Username, user.EmailAdress)) return BadRequest("Username or email is taken");
 
+            var hmac=new HMACSHA256();
+
+
             var createdUser = new User()
             {
-                FirstName= user.FirstName,
-                LastName= user.LastName,
-                PhoneNumber= user.PhoneNumber,
-                BirthDate =DateTime.Parse(user.BirthDate),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = DateTime.Parse(user.BirthDate),
                 CityId = user.CityId,
                 EmailAdress = user.EmailAdress,
-                Username=user.Username,
-                Password=user.Password,
+                Username = user.Username,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.Password)),
+                PasswordSalt = hmac.Key,
                 CreatedDate=DateTime.Now,
             };
 
@@ -72,10 +78,18 @@ namespace LendACarAPI.Endpoints
             var user = await db.Users
                 .Include(u=>u.City)
                 .Include(u => u.City != null ? u.City.Country : null)
-                .FirstOrDefaultAsync(u => u.Username.ToLower() == userLogin.Username.ToLower()
-            && u.Password == userLogin.Password);
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == userLogin.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid credentials");
+
+            using var hmac=new HMACSHA256(user.PasswordSalt);
+
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userLogin.Password));
+
+            for(var i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid credentials");
+            }
 
             return Ok(new UserDto
             {
