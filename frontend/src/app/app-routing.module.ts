@@ -1,3 +1,4 @@
+import { AdministratorModule } from './administrator/administrator.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './user/login/login.component';
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path:'employee',
     loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+  },
+  {
+    path:'admin',
+    loadChildren: () => import('./administrator/administrator.module').then(m => m.AdministratorModule),
   },
   {path: '**', redirectTo: 'public', pathMatch: 'full'}
 ];

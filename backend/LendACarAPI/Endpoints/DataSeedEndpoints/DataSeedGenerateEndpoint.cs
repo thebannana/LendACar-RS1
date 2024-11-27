@@ -1,6 +1,10 @@
 ﻿using LendACarAPI.Data;
 using LendACarAPI.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LendACarAPI.Endpoints.DataSeedEndpoints
 {
@@ -12,6 +16,8 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
         [HttpPost]
         public async Task<string> DataSeedGeneration(CancellationToken cancellationToken = default)
         {
+
+
             //Kreiranje država
             var countries = new List<Country>
             {
@@ -40,6 +46,19 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
             };
 
 
+            var adminController = new AdministratorController(db);
+            await adminController.RegisterAdministrator(new DTOs.AdministratorRegisterDto
+            {
+                FirstName = "LendACar",
+                LastName = "Administrator",
+                BirthDate = new DateTime(2003, 11, 11).ToString("dd.MM.yyyy"),
+                PhoneNumber = "123-456-7890",
+                CityId = 1,
+                EmailAdress = "admin.main@lendacar.ba",
+                Username = "admin",
+                Password = "admin"
+            });
+
             var controller = new UserController(db);
             await controller.RegisterUser(new DTOs.RegisterUserDto
             {
@@ -59,7 +78,7 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
                 FirstName = "Edin",
                 LastName = "Tabak",
                 BirthDate = new DateTime(2003, 11, 10).ToString("dd.MM.yyyy"),
-                CityId = 10,
+                CityId = 3,
                 PhoneNumber = "123-456-7890",
                 EmailAdress = "edin@edu.fit.ba"
             });
@@ -84,16 +103,18 @@ namespace LendACarAPI.Endpoints.DataSeedEndpoints
 
             var workingHours = new List<WorkingHour>
             {
-                new WorkingHour{StartTime=new TimeOnly(9,00),EndTime=new TimeOnly(17,00),Saturday=false,Sunday=false},
-                new WorkingHour{StartTime=new TimeOnly(8,00),EndTime=new TimeOnly(16,00),Saturday=false,Sunday=false},
-                new WorkingHour{StartTime=new TimeOnly(9,30),EndTime=new TimeOnly(18,00),Sunday=false},
+                new WorkingHour { StartTime = new TimeOnly(9, 00), EndTime = new TimeOnly(17, 00), Saturday = false, Sunday = false },
+                new WorkingHour { StartTime = new TimeOnly(8, 00), EndTime = new TimeOnly(16, 00), Saturday = false, Sunday = false },
+                new WorkingHour { StartTime = new TimeOnly(9, 30), EndTime = new TimeOnly(18, 00), Sunday = false },
             };
+
+
             // Dodavanje podataka u bazu
+            await db.WorkingHours.AddRangeAsync(workingHours, cancellationToken);
             await db.Countries.AddRangeAsync(countries, cancellationToken);
             await db.Cities.AddRangeAsync(cities, cancellationToken);
-            await db.WorkingHours.AddRangeAsync(workingHours, cancellationToken);
-
             await db.VehicleCategories.AddRangeAsync(vehicleCategories, cancellationToken);
+
             await db.SaveChangesAsync(cancellationToken);
 
             return "Data generation completed successfully.";
