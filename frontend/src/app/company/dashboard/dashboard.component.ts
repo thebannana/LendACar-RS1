@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
   isFormVisible = false;
   companyName = '';
@@ -26,70 +27,56 @@ export class DashboardComponent implements OnInit {
   userId: number = 0;
   updateFormVisible = false; // Visibility toggle for the update form
   selectedFileName: any;
+  employeeSectionClicked: boolean = true;
+  employeesFlag: boolean = false;
+  isEmployeeFormVisible = false;
+  hasEmployees = false;
+  employeeSectionFlag = false;
 
-  employees = [
-    {
-      employeeId: 1,
-      lastName: 'Davolio',
-      firstName: 'Nancy',
-      title: 'Sales Representative',
-      titleOfCourtesy: 'Ms.',
-      birthDate: '1948-12-08',
-      hireDate: '1992-05-01',
-      address: '507 - 20th'
-    },
-    {
-      employeeId: 2,
-      lastName: 'Fuller',
-      firstName: 'Andrew',
-      title: 'Vice President, Sales',
-      titleOfCourtesy: 'Dr.',
-      birthDate: '1952-02-19',
-      hireDate: '1992-08-14',
-      address: '908 W. 1st'
-    },
-    {
-      employeeId: 3,
-      lastName: 'Leverling',
-      firstName: 'Janet',
-      title: 'Sales Representative',
-      titleOfCourtesy: 'Ms.',
-      birthDate: '1963-08-30',
-      hireDate: '1992-04-01',
-      address: '678 - 12th'
-    },
-    {
-      employeeId: 4,
-      lastName: 'Peacock',
-      firstName: 'Margaret',
-      title: 'Sales Representative',
-      titleOfCourtesy: 'Mrs.',
-      birthDate: '1950-09-19',
-      hireDate: '1993-05-22',
-      address: '234 - 7th'
-    },
-    {
-      employeeId: 5,
-      lastName: 'Buchanan',
-      firstName: 'Steven',
-      title: 'Sales Manager',
-      titleOfCourtesy: 'Mr.',
-      birthDate: '1965-03-13',
-      hireDate: '1993-10-17',
-      address: '1122 - 5th'
-    },
-    {
-      employeeId: 6,
-      lastName: 'Suyama',
-      firstName: 'Michael',
-      title: 'Sales Representative',
-      titleOfCourtesy: 'Mr.',
-      birthDate: '1967-07-02',
-      hireDate: '1993-07-06',
-      address: '764 - 8th'
-    }
-  ];
+  employees: employees[] = [];
 
+  employee = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    title: '',
+    workingHour: '',
+  };
+
+  // Show the form when the "Add Employee" button is clicked
+  showEmployeeForm() {
+    this.isEmployeeFormVisible = true;
+    this.hasEmployees = true;
+  }
+
+  // Hide the form and reset fields when "Cancel" is clicked
+  cancelEmployeeForm() {
+    this.isEmployeeFormVisible = false;
+    this.hasEmployees = false;
+    this.resetEmployeeForm();
+  }
+
+  // Submit the form (add logic to handle the data)
+  submitEmployeeForm() {
+    // Handle form submission logic here, e.g., adding the employee to the array
+    console.log('Employee submitted:', this.employee);
+    this.hasEmployees = true; // Simulate adding an employee
+    this.isEmployeeFormVisible = false;
+    this.resetEmployeeForm();
+  }
+
+  // Reset the form fields
+  resetEmployeeForm() {
+    this.employee = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      title: '',
+      workingHour: '',
+    };
+  }
 
   constructor(private userService: UserService, private companyService: CompanyService) {
   }
@@ -128,20 +115,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   // Method to handle update logic
   updateEmployee(employee: any) {
-    console.log('Update employee:', employee);
+    return true;
   }
 
   // Method to handle delete logic
   deleteEmployee(employeeId: number) {
-    this.employees = this.employees.filter(emp => emp.employeeId !== employeeId);
-    console.log('Deleted employee with ID:', employeeId);
+    return true;
   }
 
   // Method to handle add logic
   addEmployee() {
+    return true;
   }
 
   // Show the form
@@ -229,6 +215,18 @@ export class DashboardComponent implements OnInit {
   // Set active link (navigation)
   setActive(link: string) {
     this.activeLink = link;
+    //Employee section
+    if(link=='employees'){
+      this.employeeSectionClicked = false;
+      this.employeeSectionFlag = true;
+      this.employeesFlag = this.employees.length > 0;
+    }else{
+      this.employeeSectionClicked=true;
+    }
+
+    if(link=='home'){
+      this.employeeSectionFlag = false;
+    }
   }
 
   deleteCompany(): void {
@@ -298,4 +296,14 @@ export class DashboardComponent implements OnInit {
   showUpdateForm() {
     this.updateFormVisible = true;
   }
+}
+
+interface employees {
+  employeeId: number;
+  lastName: string;
+  firstName: string;
+  phoneNumber: string;
+  companyTitle: string;
+  email: string;
+  workingHour: string;
 }
