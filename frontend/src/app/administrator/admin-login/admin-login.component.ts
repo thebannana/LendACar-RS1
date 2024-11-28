@@ -19,7 +19,7 @@ export class AdminLoginComponent {
       next:res=>{
         alert("Admin login successfull!");
         console.log(res);
-        void this.router.navigateByUrl('/admin/admin-dashboard');
+        void this.router.navigateByUrl('/admin/dashboard');
       },
       error:err=>{
         alert("Invalid login credentials");

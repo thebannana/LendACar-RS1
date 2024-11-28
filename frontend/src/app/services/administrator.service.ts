@@ -14,7 +14,7 @@ export class AdminService {
   currentAdmin=signal<AdministratorDto | null>(null)
 
   Login(model:any){
-    return this.http.post<AdministratorDto>(this.baseUrl+'admin/admin-login',model).pipe(
+    return this.http.post<AdministratorDto>(this.baseUrl+'administrator/login',model).pipe(
       map(administrator=>{
         if(administrator){
           localStorage.setItem('administrator',JSON.stringify(administrator));
