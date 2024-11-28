@@ -7,6 +7,5 @@ import {UserService} from '../../services/user.service';
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
-
   accountService=inject(UserService);
 }

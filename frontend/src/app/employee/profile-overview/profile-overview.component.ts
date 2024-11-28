@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
+import {EmployeeService} from '../../services/employee.service';
+import {WorkingHour}  from '../../Models/WorkingHour';
 
 @Component({
   selector: 'app-profile-overview',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './profile-overview.component.css'
 })
 export class ProfileOverviewComponent {
+  employeeService=inject(EmployeeService);
 
-}
+  }

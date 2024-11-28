@@ -42,8 +42,6 @@
                 </div>
                 <div class="col-md-6">
                   <label for="inputEmail4" class="form-label">City *</label>
-<!--                  <input type="email" class="form-control" id="inputCit4"
-                         value="{{accountService.currentUser()?.city?.name}}">-->
                   <select class="form-select" aria-label="Default select example" name="city" [(ngModel)]="model.cityId">
                       <option *ngFor="let city of cities" id="floatingInputCity" [value]="city.id">{{city.name}}</option>
                   </select>
@@ -56,7 +54,7 @@
                   <input type="email" disabled class="form-control bg-secondary" name="emailAddress" id="inputEmail4"
                        [(ngModel)]="model.emailAddress">
                 </div>
-                <!-- Skype -->
+                <!-- Usernaem -->
                 <div class="col-md-6">
                   <label class="form-label">Username *</label>
                   <input type="text" disabled class="form-control bg-secondary" name="username" aria-label="Phone number"

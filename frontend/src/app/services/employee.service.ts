@@ -24,4 +24,16 @@ export class EmployeeService {
       })
     )
   }
+
+  Update(model:any){
+    return this.http.put<EmployeeDto>(this.baseUrl+`employee/update/${model.id}`,model).pipe(
+      map(employee=>{
+        if(employee){
+          localStorage.setItem('employee',JSON.stringify(employee));
+          this.currentEmployee.set(employee);
+        }
+        return employee;
+      })
+    )
+  }
 }

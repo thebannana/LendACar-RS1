@@ -18,7 +18,7 @@ namespace LendACarAPI.Endpoints
         {
             var hmac = new HMACSHA256();
 
-            if(await EmployeeExists(registerEmployee.Username,registerEmployee.EmailAdress)) { return BadRequest("Username or email is taken"); }
+            if (await EmployeeExists(registerEmployee.Username, registerEmployee.EmailAdress)) { return BadRequest("Username or email is taken"); }
 
             var employee = new Employee
             {
@@ -37,7 +37,7 @@ namespace LendACarAPI.Endpoints
             };
 
             db.Employees.Add(employee);
-           await db.SaveChangesAsync();
+            await db.SaveChangesAsync();
 
             return Created();
         }
@@ -49,10 +49,10 @@ namespace LendACarAPI.Endpoints
             var employee = await db.Employees
             .Include(e => e.City)
             .Include(e => e.City != null ? e.City.Country : null)
-            .Include(e=> e.WorkingHour)
+            .Include(e => e.WorkingHour)
             .FirstOrDefaultAsync(e => e.EmailAdress.ToLower() == employeeLogin.EmailAddress.ToLower());
 
-            if(employee == null)
+            if (employee == null)
                 return Unauthorized("Invalid credentials");
 
             var hmac = new HMACSHA256(employee.PasswordSalt);
@@ -61,7 +61,7 @@ namespace LendACarAPI.Endpoints
 
             for (var i = 0; i < computedHash.Length; i++)
             {
-                if (computedHash[i] != employee.PasswordHash[i]) 
+                if (computedHash[i] != employee.PasswordHash[i])
                     return Unauthorized("Invalid credentials");
             }
 
@@ -83,6 +83,7 @@ namespace LendACarAPI.Endpoints
 
         }
 
+<<<<<<< Updated upstream
         [HttpDelete("remove/{id}")]
         public async Task<ActionResult<string>> RemoveEmployee(int id)
         {
@@ -96,6 +97,49 @@ namespace LendACarAPI.Endpoints
 
             return Ok();
         }
+=======
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> EditEmployee(int id, [FromBody] EmployeeDto employeeDto,CancellationToken cancellationToken)
+        {
+            var employee= await db.Employees
+                .Include(e=>e.City)
+                .Include(u => u.City != null ? u.City.Country : null)
+                .Include(e=>e.WorkingHour)
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if(employee == null) return NotFound();
+
+            employee.PhoneNumber = employeeDto.PhoneNumber;
+            employee.CityId = employeeDto.CityId;
+
+            await db.SaveChangesAsync(cancellationToken);
+
+            var returnEmployee = await db.Employees
+               .Include(e => e.City)
+               .Include(u => u.City != null ? u.City.Country : null)
+               .Include(e => e.WorkingHour)
+               .Select(e => new EmployeeDto
+               {
+                   Id = e.Id,
+                   FirstName = e.FirstName,
+                   LastName = e.LastName,
+                   PhoneNumber = e.PhoneNumber,
+                   BirthDate = e.BirthDate.ToString("dd.MM.yyyy"),
+                   City = e.City,
+                   CityId = e.CityId,
+                   EmailAddress = e.EmailAdress,
+                   Username = e.Username,
+                   JobTitle = e.JobTitle,
+                   WorkingHour = e.WorkingHour,
+                   WorkingHourId = e.WorkingHourId,
+               })
+               .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            return Ok(returnEmployee);
+
+        }
+        
+>>>>>>> Stashed changes
 
         private async Task<bool> EmployeeExists(string username, string email)
         {

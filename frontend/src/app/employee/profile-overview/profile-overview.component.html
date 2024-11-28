@@ -17,8 +17,9 @@
           <div class="card-body text-center">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                  class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">John Doe</h5>
-            <p class="text-muted mb-4">Sarajevo,BiH</p>
+            <h5 class="my-3">{{employeeService.currentEmployee()?.firstName}} {{employeeService.currentEmployee()?.lastName}}</h5>
+            <p class="text-muted mb-4">
+              {{employeeService.currentEmployee()?.city?.name}}, {{employeeService.currentEmployee()?.city?.country?.name}}</p>
             <div class="d-flex justify-content-center mb-2">
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
                        routerLink="/employee/profileEdit">Edit</button>
@@ -35,7 +36,7 @@
                 <p class="mb-0">Full Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">John Doe</p>
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.firstName}} {{employeeService.currentEmployee()?.lastName}}</p>
               </div>
             </div>
             <hr>
@@ -44,7 +45,7 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">'john.doe'</p>
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.emailAddress}}</p>
               </div>
             </div>
             <hr>
@@ -53,7 +54,7 @@
                 <p class="mb-0">Phone</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">123-123-123</p>
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.phoneNumber}}</p>
               </div>
             </div>
             <hr>
@@ -62,7 +63,7 @@
                 <p class="mb-0">Birth date</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">1.2.1993</p>
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.birthDate}}</p>
               </div>
             </div>
             <hr>
@@ -71,7 +72,9 @@
                 <p class="mb-0">Address</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Sarajevo, BiH</p>
+                <p class="text-muted mb-0">
+                  {{employeeService.currentEmployee()?.city?.name}}, {{employeeService.currentEmployee()?.city?.country?.name}}
+                </p>
               </div>
             </div>
             <hr>
@@ -80,7 +83,16 @@
                 <p class="mb-0">Username</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Jonh</p>
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.username}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Job title</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{employeeService.currentEmployee()?.jobTitle}}</p>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { AdministratorModule } from './administrator/administrator.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './user/login/login.component';
+import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path:'admin',
     loadChildren: () => import('./administrator/administrator.module').then(m => m.AdministratorModule),
+  },
+  {
+    path:'forgotPassword',
+    component: ForgotPasswordComponent
   },
   {path: '**', redirectTo: 'public', pathMatch: 'full'}
 ];
