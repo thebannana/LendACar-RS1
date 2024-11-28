@@ -75,7 +75,22 @@ namespace LendACarAPI.Endpoints
             });
 
         }
-        
+
+
+        [HttpDelete("remove/{id}")]
+        public async Task<ActionResult<string>> RemoveAdmin(int id)
+        {
+            var admin = await db.Administrators
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (admin == null) return NotFound("Administrator not found");
+
+            db.Remove(admin);
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
         private async Task<bool> AdminExists(string username, string email)
         {

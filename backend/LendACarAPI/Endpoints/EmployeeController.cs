@@ -82,7 +82,20 @@ namespace LendACarAPI.Endpoints
             });
 
         }
-        
+
+        [HttpDelete("remove/{id}")]
+        public async Task<ActionResult<string>> RemoveEmployee(int id)
+        {
+            var employee = await db.Employees
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (employee == null) return NotFound("Employee not found");
+
+            db.Remove(employee);
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
 
         private async Task<bool> EmployeeExists(string username, string email)
         {
