@@ -83,7 +83,7 @@ namespace LendACarAPI.Endpoints
 
         }
 
-<<<<<<< Updated upstream
+
         [HttpDelete("remove/{id}")]
         public async Task<ActionResult<string>> RemoveEmployee(int id)
         {
@@ -97,7 +97,7 @@ namespace LendACarAPI.Endpoints
 
             return Ok();
         }
-=======
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> EditEmployee(int id, [FromBody] EmployeeDto employeeDto,CancellationToken cancellationToken)
         {
@@ -139,7 +139,7 @@ namespace LendACarAPI.Endpoints
 
         }
         
->>>>>>> Stashed changes
+
 
         private async Task<bool> EmployeeExists(string username, string email)
         {

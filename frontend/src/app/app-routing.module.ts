@@ -30,7 +30,7 @@ const routes: Routes = [
     loadChildren: () => import('./administrator/administrator.module').then(m => m.AdministratorModule),
   },
   {
-    path:'forgotPassword',
+    path:'resetPassword',
     component: ForgotPasswordComponent
   },
   {path: '**', redirectTo: 'public', pathMatch: 'full'}

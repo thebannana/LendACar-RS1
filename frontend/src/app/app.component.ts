@@ -23,7 +23,6 @@ export class AppComponent implements OnInit {
     if(!userString)return;
     const user:UserDto=JSON.parse(userString);
     this.accountService.currentUser.set(user);
-    console.log(this.accountService.currentUser());
   }
 
   setCurrentEmployee(){
@@ -31,6 +30,5 @@ export class AppComponent implements OnInit {
     if(!userString)return;
     const employee:EmployeeDto=JSON.parse(userString);
     this.employeeService.currentEmployee.set(employee);
-    console.log(this.employeeService.currentEmployee);
   }
 }
