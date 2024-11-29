@@ -5,6 +5,9 @@ import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.compone
 import {AdminProfileOverviewComponent} from './admin-profile-overview/admin-profile-overview.component';
 import {AdminEditOwnProfileComponent} from './admin-edit-own-profile/admin-edit-own-profile.component';
 import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.component';
+import {AdminEmployeeOverviewComponent} from './admin-employee-overview/admin-employee-overview.component';
+import { VehicleOverviewComponent } from './vehicle-overview/vehicle-overview.component';
+import { UserOverviewComponent } from './user-overview/user-overview.component';
 
 const routes: Routes = [
   {path:'',redirectTo:'login' ,pathMatch:'full'},
@@ -12,7 +15,10 @@ const routes: Routes = [
   {path:'dashboard', component: AdminDashboardComponent},
   {path:'profileOverview', component: AdminProfileOverviewComponent},
   {path:'profileEdit',component:AdminEditOwnProfileComponent},
-  {path:'vehicleCategories',component: VehicleCategoriesComponent}
+  {path:'vehicleCategories',component: VehicleCategoriesComponent},
+  {path:'employeeOverview',component: AdminEmployeeOverviewComponent},
+  {path:'vehicleOverview',component: VehicleOverviewComponent},
+  {path:'userOverview',component: UserOverviewComponent},
 ];
 
 @NgModule({
