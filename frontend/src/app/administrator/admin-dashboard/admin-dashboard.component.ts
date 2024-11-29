@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component ,inject, OnInit } from '@angular/core';
+import {AdminService} from '../../services/administrator.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent {
+  adminService=inject(AdminService);
+  router=inject(Router);
 
+  logout() {
+    this.adminService.currentAdmin.set(null);
+    localStorage.removeItem('admin');
+    void this.router.navigateByUrl('/admin/login');
+  }
 }

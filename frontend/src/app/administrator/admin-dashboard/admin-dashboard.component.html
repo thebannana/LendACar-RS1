@@ -1,1 +1,86 @@
-<p>admin-dashboard works!</p>
+<body>
+    <!-- Header with Navbar -->
+    <header class="bg-dark text-white py-2">
+      <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <img src="../../../../../graphics/LAC_logo.png" alt="Logo" style="height: 40px;" class="me-3">
+          <span></span>
+        </div>
+    
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Employee Data Overview</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Vehicle Data Overview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Search Records</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div>
+          <span class="me-3" routerLink="/admin/profileOverview" style="cursor: pointer; font-weight: bold">
+            {{adminService.currentAdmin()?.firstName}} {{adminService.currentAdmin()?.lastName}}
+          </span>
+          <button class="btn btn-sm btn-outline-light" routerLink="/admin/login" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <!-- Main Dashboard -->
+        <main class="col-12">
+          <!-- Notifications and Calendar -->
+          <div class="row">
+            <!-- Notifications Panel -->
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header">Notifications</div>
+                <div class="card-body">
+                  <ul class="list-group">
+                    <li class="list-group-item">Car #123 needs servicing.</li>
+                    <li class="list-group-item">Booking #456 is overdue.</li>
+                    <li class="list-group-item">New customer inquiry received.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Calendar/Schedule -->
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header">Calendar / Schedule</div>
+                <div class="card-body">
+                  <p>Upcoming events and schedule will be shown here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
+      <div class="container d-flex align-items-center">
+        <span>&copy; 2024 Lend A Car</span>
+        <ul class="list-inline mb-0 p-3">
+          <li class="list-inline-item"><a href="#" class="text-white">Policies</a></li>
+          <li class="list-inline-item"><a href="#" class="text-white">Support</a></li>
+          <li class="list-inline-item"><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+    </footer>
+    </body>
+    
