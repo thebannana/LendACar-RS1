@@ -8,6 +8,9 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminEditOwnProfileComponent } from './admin-edit-own-profile/admin-edit-own-profile.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.component';
+import { AdminEmployeeOverviewComponent } from './admin-employee-overview/admin-employee-overview.component';
+import { VehicleOverviewComponent } from './vehicle-overview/vehicle-overview.component';
+import { UserOverviewComponent } from './user-overview/user-overview.component';
 
 
 
@@ -17,7 +20,10 @@ import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.
     AdminProfileOverviewComponent,
     AdminDashboardComponent,
     AdminEditOwnProfileComponent,
-    VehicleCategoriesComponent
+    VehicleCategoriesComponent,
+    AdminEmployeeOverviewComponent,
+    VehicleOverviewComponent,
+    UserOverviewComponent
   ],
   imports: [
     CommonModule,
