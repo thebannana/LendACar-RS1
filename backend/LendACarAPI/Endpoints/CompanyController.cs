@@ -61,6 +61,45 @@ namespace LendACarAPI.Endpoints
                 return BadRequest("This user already has a company.");
             }
 
+            // Create default WorkingHours if they don't exist
+            var workingHour = await _context.WorkingHours
+                .FirstOrDefaultAsync(wh => wh.StartTime == new TimeOnly(9, 0) && wh.EndTime == new TimeOnly(17, 0));
+
+            if (workingHour == null)
+            {
+                workingHour = new WorkingHour
+                {
+                    StartTime = new TimeOnly(9, 0), // Default to 9:00 AM if not provided
+                    EndTime = new TimeOnly(17, 0), // Default to 5:00 PM if not provided
+                    Monday = true,
+                    Tuesday = true,
+                    Wednesday = true,
+                    Thursday = true,
+                    Friday = true,
+                    Saturday = true,
+                    Sunday = true
+                };
+
+                _context.WorkingHours.Add(workingHour);
+                await _context.SaveChangesAsync();
+            }
+
+            // Create default CompanyPosition if it doesn't exist
+            var companyPosition = await _context.CompanyPositions
+                .FirstOrDefaultAsync(cp => cp.Name == "Admin");
+
+            if (companyPosition == null)
+            {
+                companyPosition = new CompanyPosition
+                {
+                    Name = "Admin",
+                    Description = "Company Administrator"
+                };
+
+                _context.CompanyPositions.Add(companyPosition);
+                await _context.SaveChangesAsync();
+            }
+
             // Map the incoming request to the company model
             var company = new Company
             {
@@ -83,12 +122,36 @@ namespace LendACarAPI.Endpoints
                 }
             }
 
-            // Add to the database
+            // Add the company to the database
             _context.Companies.Add(company);
+            await _context.SaveChangesAsync();
+
+            // Retrieve the user's email to set as the admin email
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == request.UserId);
+
+            if (user == null)
+            {
+                return BadRequest("User not found.");
+            }
+
+            // Create the CompanyEmployee entry, making the user an admin
+            var companyEmployee = new CompanyEmployee
+            {
+                UserId = request.UserId, // The current user's ID
+                CompanyId = company.Id,  // The newly created company's ID
+                CompanyAdminEmail = user.EmailAdress, // Set the admin email to the user's email
+                CompanyPositionId = companyPosition.Id, // Link to the default 'Admin' position
+                WorkingHourId = workingHour.Id // Link the newly created working hours to the employee
+            };
+
+            // Add the employee to the CompanyEmployee table
+            _context.CompanyEmployees.Add(companyEmployee);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetCompanyByUserId), new { userId = company.UserId }, company);
         }
+
 
         [HttpDelete("deleteByUser/{userId}")]
         public async Task<IActionResult> DeleteCompanyByUserId(int userId)

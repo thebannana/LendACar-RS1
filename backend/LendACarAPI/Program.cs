@@ -24,7 +24,6 @@ builder.Services.AddSwaggerGen();
 
 //dodajte vaše servise
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
