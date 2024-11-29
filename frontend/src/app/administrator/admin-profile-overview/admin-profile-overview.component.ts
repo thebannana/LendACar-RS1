@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
+import {AdminService} from '../../services/administrator.service';
 
 @Component({
   selector: 'app-admin-profile-overview',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './admin-profile-overview.component.css'
 })
 export class AdminProfileOverviewComponent {
-
+  adminService=inject(AdminService);
 }

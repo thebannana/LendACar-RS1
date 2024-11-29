@@ -1,1 +1,98 @@
-<p>admin-edit-own-profile works!</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Page title -->
+      <div class="my-5">
+        <h3>My Profile</h3>
+        <hr>
+      </div>
+      <!-- Form START -->
+      <form #editForm="ngForm" (ngSubmit)="Update()" class="file-upload">
+        <div class="row mb-5 gx-5">
+          <!-- Contact detail -->
+          <div class="col-xxl-8 mb-5 mb-xxl-0">
+            <div class="bg-secondary-soft px-4 py-5 rounded">
+              <div class="row g-3">
+                <h4 class="mb-4 mt-0">Contact detail</h4>
+                <!-- First Name -->
+                <div class="col-md-6">
+                  <label class="form-label">First Name *</label>
+                  <input type="text" class="form-control" name="firstName" aria-label="First name"
+                         [(ngModel)]="model.firstName">
+                </div>
+                <!-- Last name -->
+                <div class="col-md-6">
+                  <label class="form-label">Last Name *</label>
+                  <input type="text" class="form-control" name="lastName" aria-label="Last name"
+                         [(ngModel)]="model.lastName">
+                </div>
+                <!-- Phone number -->
+                <div class="col-md-6">
+                  <label class="form-label">Phone number *</label>
+                  <input type="text" class="form-control" name="phoneNumber" aria-label="Phone number"
+                        [(ngModel)]="model.phoneNumber" >
+                </div>
+                <!-- Mobile number -->
+                <div class="col-md-6">
+                  <label class="form-label">Birth date *</label>
+                  <input type="text"  class="form-control bg-secondary" name="birthDate" aria-label="Phone number"
+                       [(ngModel)]="model.birthDate">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputEmail4" class="form-label">City *</label>
+                  <select class="form-select" aria-label="Default select example" name="city" [(ngModel)]="model.cityId">
+                      <option *ngFor="let city of cities" id="floatingInputCity" [value]="city.id">{{city.name}}</option>
+                  </select>
+
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                  <label for="inputEmail4" class="form-label">Email *</label>
+                  <input type="email"  class="form-control bg-secondary" name="emailAddress" id="inputEmail4"
+                       [(ngModel)]="model.emailAddress">
+                </div>
+                <!-- Usernaem -->
+                <div class="col-md-6">
+                  <label class="form-label">Username *</label>
+                  <input type="text"  class="form-control bg-secondary" name="username" aria-label="Phone number"
+                       [(ngModel)]="model.username">
+                </div>
+              </div> <!-- Row END -->
+            </div>
+          </div>
+          <!-- Upload profile -->
+          <div class="col-xxl-4">
+            <div class="bg-secondary-soft px-4 py-5 rounded">
+              <div class="row g-3">
+                <h4 class="mb-4 mt-0">Upload your profile photo</h4>
+                <div class="text-center">
+                  <!-- Image upload -->
+                  <div class="square position-relative display-2 mb-3">
+                    <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
+                  </div>
+                  <!-- Button -->
+                  <input type="file" id="customFile" name="file" hidden="">
+                  <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+                  <button type="button" class="btn btn-danger-soft">Remove</button>
+                  <!-- Content -->
+                  <p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- Row END -->
+
+        <!-- Social media detail -->
+
+        <!-- button -->
+        <div class="gap-3 d-md-flex justify-content-md-end text-center">
+          <button type="submit" class="btn btn-primary btn-lg">Update profile</button>
+        </div>
+      </form> <!-- Form END -->
+      <button type="button" class="btn btn-primary" routerLink="/admin/profileOverview">Back</button>
+    </div>
+  </div>
+</div>

@@ -76,6 +76,42 @@ namespace LendACarAPI.Endpoints
 
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> EditAdministrator(int id, [FromBody] AdministratorDto adminDto, CancellationToken cancellationToken)
+        {
+            var admin = await db.Administrators
+                .Include(e => e.City)
+                .Include(u => u.City != null ? u.City.Country : null)
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if (admin == null) return NotFound();
+
+            admin.PhoneNumber = adminDto.PhoneNumber;
+            admin.CityId = adminDto.CityId;
+
+            await db.SaveChangesAsync(cancellationToken);
+
+            var returnAdmin = await db.Administrators
+               .Include(a => a.City)
+               .Include(u => u.City != null ? u.City.Country : null)
+               .Select(a => new AdministratorDto
+               {
+                   Id = a.Id,
+                   FirstName = a.FirstName,
+                   LastName = a.LastName,
+                   PhoneNumber = a.PhoneNumber,
+                   BirthDate = a.BirthDate.ToString("dd.MM.yyyy"),
+                   City = a.City,
+                   CityId = a.CityId,
+                   EmailAddress = a.EmailAdress,
+                   Username = a.Username,
+               })
+               .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            return Ok(returnAdmin);
+
+        }
+
 
         [HttpDelete("remove/{id}")]
         public async Task<ActionResult<string>> RemoveAdmin(int id)
