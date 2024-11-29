@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { isElementAccessExpression } from 'typescript';
+import {AdminService} from '../../services/administrator.service';
+import {Router} from '@angular/router';
 
 interface VehicleCategory {
   id?: number;
@@ -14,12 +16,15 @@ interface VehicleCategory {
   styleUrls: ['./vehicle-category.component.css']
 })
 export class VehicleCategoriesComponent implements OnInit {
+  adminService=inject(AdminService);
+  router=inject(Router);
+
   vehicleCategories: VehicleCategory[] = [];
   newCategory: VehicleCategory = { name: '', description: '' };
   editMode = false;
   editCategoryId: number | null = null;
 
-  private apiUrl = 'http://localhost:7000/api/VehicleCategory'; // Adjust as necessary
+  private apiUrl = 'http://localhost:7000/api/VehicleCategory'; 
 
   constructor(private http: HttpClient) {}
 

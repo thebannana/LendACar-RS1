@@ -7,6 +7,7 @@ import { AdminProfileOverviewComponent } from './admin-profile-overview/admin-pr
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminEditOwnProfileComponent } from './admin-edit-own-profile/admin-edit-own-profile.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.component';
 
 
 
@@ -15,7 +16,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     AdminLoginComponent,
     AdminProfileOverviewComponent,
     AdminDashboardComponent,
-    AdminEditOwnProfileComponent
+    AdminEditOwnProfileComponent,
+    VehicleCategoriesComponent
   ],
   imports: [
     CommonModule,

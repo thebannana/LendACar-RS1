@@ -4,6 +4,7 @@ import {AdminLoginComponent} from './admin-login/admin-login.component';
 import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 import {AdminProfileOverviewComponent} from './admin-profile-overview/admin-profile-overview.component';
 import {AdminEditOwnProfileComponent} from './admin-edit-own-profile/admin-edit-own-profile.component';
+import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.component';
 
 const routes: Routes = [
   {path:'',redirectTo:'login' ,pathMatch:'full'},
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path:'dashboard', component: AdminDashboardComponent},
   {path:'profileOverview', component: AdminProfileOverviewComponent},
   {path:'profileEdit',component:AdminEditOwnProfileComponent},
+  {path:'vehicleCategories',component: VehicleCategoriesComponent}
 ];
 
 @NgModule({
