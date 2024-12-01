@@ -2,16 +2,13 @@ using LendACarAPI.Data;
 using LendACarAPI.Helper.Auth;
 using Microsoft.EntityFrameworkCore;
 
-
-
 var config = new ConfigurationBuilder()
-.AddJsonFile("appsettings.json", false)
-.Build();
+    .AddJsonFile("appsettings.json", false)
+    .Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db")));
 
@@ -22,6 +19,19 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHead
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen();
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowEverything", policy =>
+    {
+        policy
+            .SetIsOriginAllowed(x => _ = true) // Allow all origins
+            .AllowAnyMethod()  // Allow all methods (GET, POST, etc.)
+            .AllowAnyHeader()  // Allow all headers
+            .AllowCredentials();  // Allow credentials (cookies, headers, etc.)
+    });
+});
+
 //dodajte vaše servise
 
 var app = builder.Build();
@@ -30,14 +40,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(
-    options => options
-        .SetIsOriginAllowed(x => _ = true)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
-); //This needs to set everything allowed
-
+app.UseCors("AllowEverything");  // Apply the CORS policy
 
 app.UseAuthorization();
 

@@ -16,6 +16,10 @@ a{
   height: 50rem;
 }
 
+#companyAdminEmail{
+  color: gray;
+}
+
 #CreateCompanyForm>button{
   margin: 10px 0;
 }

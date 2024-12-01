@@ -1,3 +1,4 @@
+using Azure.Core.GeoJson;
 using LendACarAPI.Data;
 using LendACarAPI.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -36,14 +37,56 @@ namespace LendACarAPI.Endpoints
             return companyEmployees;
         }
 
-        // POST method to add a new employee
+        [HttpGet("get/all")]
+        public async Task<ActionResult<IEnumerable<CompanyEmployee>>> GetAllEmployeesForAdmin()
+        {
+            // Get the current user's email from the request headers
+            var currentUserEmail = Request.Headers["EmailAddress"].ToString();
+
+            if (string.IsNullOrEmpty(currentUserEmail))
+            {
+                return Unauthorized("User is not authenticated.");
+            }
+
+            // Step 1: Find the company admin using their email
+            var companyAdmin = await _context.CompanyEmployees
+                .Include(ce => ce.User)  // Include User
+                .FirstOrDefaultAsync(ce => ce.CompanyAdminEmail == currentUserEmail);
+
+            if (companyAdmin == null)
+            {
+                return NotFound("Company admin not found.");
+            }
+
+            // Step 2: Get the company ID from the admin
+            var companyId = companyAdmin.CompanyId;
+
+            // Step 3: Get all employees of the same company except the one with the company admin email
+            var companyEmployees = await _context.CompanyEmployees
+                .Include(ce => ce.User)              // Include User
+                .Include(ce => ce.CompanyPosition)   // Include CompanyPosition
+                .Include(ce => ce.Company)           // Include Company
+                .Include(ce => ce.WorkingHour)       // Include WorkingHour
+                .Where(ce => ce.CompanyId == companyId && ce.CompanyAdminEmail != currentUserEmail) // Exclude the company admin
+                .ToListAsync();
+
+            if (companyEmployees == null || !companyEmployees.Any())
+            {
+                return NotFound("No employees found for this company.");
+            }
+
+            return Ok(companyEmployees);
+        }
+
+
+
         [HttpPost("add")]
         public async Task<ActionResult> AddEmployee([FromBody] AddEmployeeRequest request)
         {
             // Validate the request data
             if (request == null)
             {
-                return BadRequest("Invalid employee data.");
+                return BadRequest(new { message = "Invalid employee data." });
             }
 
             // Step 1: Find the company admin using their email (this email should exist)
@@ -53,7 +96,7 @@ namespace LendACarAPI.Endpoints
 
             if (companyAdmin == null)
             {
-                return NotFound("Company admin not found.");
+                return NotFound(new { message = "Company admin not found." });
             }
 
             // Step 2: Get the company ID from the admin
@@ -66,67 +109,82 @@ namespace LendACarAPI.Endpoints
                 LastName = request.LastName,
                 EmailAdress = request.Email,
                 PhoneNumber = request.PhoneNumber,
-                // For now we are setting empty password fields (should be handled properly)
-                PasswordHash = new byte[0],  // You should generate this based on actual user input
-                PasswordSalt = new byte[0],  // You should generate this based on actual user input
+                PasswordHash = new byte[0],  // Placeholder for actual password handling
+                PasswordSalt = new byte[0],  // Placeholder for actual password handling
                 Username = request.FirstName + request.LastName,
-                // Set default CityId for now (assuming 1 is a valid CityId in your database)
-                CityId = 1  // Default CityId
+                CityId = 1  // Default CityId (adjust as needed)
             };
 
             // Step 4: Add the new user to the database
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            // Step 5: Create the CompanyPosition for the employee
-            var newPosition = new CompanyPosition
+            // Step 5: Check if the CompanyPosition already exists
+            var companyPosition = await _context.CompanyPositions
+                .FirstOrDefaultAsync(p => p.Name == request.Title);
+
+            if (companyPosition == null)
             {
-                Name = request.Title,  // Set the title of the employee (the position)
-            };
-
-            _context.CompanyPositions.Add(newPosition);
-            await _context.SaveChangesAsync();
-
-            // Step 6: Check if there is a default WorkingHours record, or create one if necessary
-            var defaultWorkingHour = await _context.WorkingHours
-                .FirstOrDefaultAsync(w => w.StartTime == new TimeOnly(9, 0) && w.EndTime == new TimeOnly(17, 0)); // assuming the client passes this ID
-
-            if (defaultWorkingHour == null)
-            {
-                // Create a default working hours record if one doesn't exist
-                defaultWorkingHour = new WorkingHour
+                // Create the CompanyPosition if it doesn't exist
+                companyPosition = new CompanyPosition
                 {
-                    StartTime = new TimeOnly(9,0),  // Example start time
-                    EndTime = new TimeOnly(17,0),  // Example end time
-                    Monday = true,
-                    Tuesday = true,
-                    Wednesday = true,
-                    Thursday = true,
-                    Friday = true,
-                    Saturday = false,  // Assuming weekends off
-                    Sunday = false     // Assuming weekends off
+                    Name = request.Title
                 };
-
-                _context.WorkingHours.Add(defaultWorkingHour);
+                _context.CompanyPositions.Add(companyPosition);
                 await _context.SaveChangesAsync();
             }
+
+            // Step 6: Create a unique WorkingHour entry for the employee
+            var newWorkingHour = new WorkingHour
+            {
+                StartTime = new TimeOnly(9, 0),  // Example start time
+                EndTime = new TimeOnly(17, 0),  // Example end time
+                Monday = true,
+                Tuesday = true,
+                Wednesday = true,
+                Thursday = true,
+                Friday = true,
+                Saturday = false,
+                Sunday = false
+            };
+
+            _context.WorkingHours.Add(newWorkingHour);
+            await _context.SaveChangesAsync();
 
             // Step 7: Create the CompanyEmployee entry for the new employee
             var companyEmployee = new CompanyEmployee
             {
                 UserId = newUser.Id,
-                CompanyPositionId = newPosition.Id,
-                CompanyId = companyId,  // The same company as the admin
-                CompanyAdminEmail = null,  // Only the admin will have this field set
-                WorkingHourId = defaultWorkingHour.Id  // Assign the default WorkingHourId
+                CompanyPositionId = companyPosition.Id,  // Use the existing or newly created position ID
+                CompanyId = companyId,
+                CompanyAdminEmail = null,  // Only the admin will have this set
+                WorkingHourId = newWorkingHour.Id  // Assign the newly created WorkingHourId
             };
 
             _context.CompanyEmployees.Add(companyEmployee);
             await _context.SaveChangesAsync();
 
-            return Ok("Employee added successfully.");
+            // Return a JSON response with a message
+            return Ok(new { message = "Employee added successfully." });
         }
 
+
+
+        [HttpGet("admin-email/{userId}")]
+        public IActionResult GetCompanyAdminEmail(int userId)
+        {
+            var companyEmployee = _context.CompanyEmployees
+                                          .FirstOrDefault(e => e.UserId == userId && e.CompanyAdminEmail != null);
+
+            if (companyEmployee != null)
+            {
+                return Ok(new { companyAdminEmail = companyEmployee.CompanyAdminEmail });
+            }
+            else
+            {
+                return NotFound(new { error = "Company Admin Email hasn't been found for this user!" });
+            }
+        }
 
 
 

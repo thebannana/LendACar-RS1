@@ -134,15 +134,16 @@
             />
           </div>
 
-          <!-- Employee Working Hours Field -->
+          <!-- Employee Admin Email -->
           <div class="form-group mb-3">
-            <label for="employeeWorkingHour">Working Hours</label>
+            <label for="companyAdminEmail">Company admin email</label>
             <input
               type="text"
               class="form-control"
-              id="employeeWorkingHour"
-              [(ngModel)]="employee.workingHour"
-              name="employeeWorkingHour"
+              id="companyAdminEmail"
+              [(ngModel)]="employee.companyAdminEmail"
+              name="companyAdminEmail"
+              readonly
               required
             />
           </div>
@@ -157,38 +158,40 @@
         </form>
       </div>
       <!-- Employee Table -->
-      <div *ngIf="activeLink === 'employees' && isLoggedIn && hasCompany && employeesFlag" class="table-responsive">
-        <table class="table table-dark table-striped table-hover">
-          <thead>
-          <tr>
-            <th>Employee ID</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Phone number</th>
-            <th>Title</th>
-            <th>Email</th>
-            <th>Working hour</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let employee of employees">
-            <td>{{ employee.employeeId }}</td>
-            <td>{{ employee.lastName }}</td>
-            <td>{{ employee.firstName }}</td>
-            <td>{{ employee.phoneNumber }}</td>
-            <td>{{ employee.companyTitle }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.workingHour }}</td>
-            <td>
-              <button type="button" class="btn btn-warning btn-sm me-2" (click)="updateEmployee(employee)">Update</button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteEmployee(employee.employeeId)">Delete</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <button type="button" class="btn btn-primary btn-sm" (click)="addEmployee()">Add Employee</button>
-      </div>
+        <div *ngIf="activeLink === 'employees' && isLoggedIn && hasCompany && employeesFlag" class="table-responsive">
+          <table class="table table-dark table-striped table-hover">
+            <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>Last Name</th>
+              <th>First Name</th>
+              <th>Phone Number</th>
+              <th>Title</th>
+              <th>Email</th>
+              <th>Working Hour</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let employee of employees">
+              <!-- Ensure employee object has these properties -->
+              <td>{{ employee.employeeId }}</td>
+              <td>{{ employee.lastName }}</td>
+              <td>{{ employee.firstName }}</td>
+              <td>{{ employee.phoneNumber }}</td>
+              <td>{{ employee.companyTitle }}</td>
+              <td>{{ employee.email }}</td>
+              <td>{{ employee.workingHour }}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm me-2" (click)="updateEmployee(employee)">Update</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteEmployee(employee.employeeId)">Delete</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-primary btn-sm" (click)="addEmployee()">Add Employee</button>
+        </div>
+
 
       <!-- Message if no employees are present -->
       <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="activeLink === 'employees' && !employeesFlag && isLoggedIn && hasCompany && !hasEmployees">

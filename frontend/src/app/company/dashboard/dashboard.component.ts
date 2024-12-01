@@ -2,6 +2,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import {CompanyService} from '../../services/company.service';
+import {CompanyEmployeeService} from '../../services/companyemployee.service';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -32,7 +33,7 @@ export class DashboardComponent implements OnInit {
   isEmployeeFormVisible = false;
   hasEmployees = false;
   employeeSectionFlag = false;
-
+  employeesTableFlag = false; // A flag to toggle the visibility of the employee table
   employees: employees[] = [];
 
   employee = {
@@ -41,13 +42,14 @@ export class DashboardComponent implements OnInit {
     email: '',
     phoneNumber: '',
     title: '',
-    workingHour: '',
+    companyAdminEmail: '',
   };
 
   // Show the form when the "Add Employee" button is clicked
   showEmployeeForm() {
     this.isEmployeeFormVisible = true;
     this.hasEmployees = true;
+
   }
 
   // Hide the form and reset fields when "Cancel" is clicked
@@ -57,13 +59,54 @@ export class DashboardComponent implements OnInit {
     this.resetEmployeeForm();
   }
 
-  // Submit the form (add logic to handle the data)
   submitEmployeeForm() {
-    // Handle form submission logic here, e.g., adding the employee to the array
-    console.log('Employee submitted:', this.employee);
-    this.hasEmployees = true; // Simulate adding an employee
-    this.isEmployeeFormVisible = false;
-    this.resetEmployeeForm();
+    // Check if any of the required fields are empty
+    if (!this.employee.companyAdminEmail) {
+      alert('Company Admin Email is required.');
+      return;
+    }
+    if (!this.employee.firstName) {
+      alert('First Name is required.');
+      return;
+    }
+    if (!this.employee.lastName) {
+      alert('Last Name is required.');
+      return;
+    }
+    if (!this.employee.email) {
+      alert('Email is required.');
+      return;
+    }
+    if (!this.employee.phoneNumber) {
+      alert('Phone Number is required.');
+      return;
+    }
+    if (!this.employee.title) {
+      alert('Title is required.');
+      return;
+    }
+
+    console.log('Submitting Employee Form:', this.employee);
+    this.companyEmployeeService.addEmployee(this.employee).subscribe(
+      (response) => {
+        console.log('Current Employee Data:', this.employee);
+        console.log('Employee added successfully:', response);
+        this.isEmployeeFormVisible = false;
+        this.resetEmployeeForm();
+      },
+      (error) => {
+        console.error('Error adding employee:', error);
+
+        // Check if error has a response body and it is JSON
+        if (error.error && error.error.message) {
+          // Show the message from the JSON response
+          alert(`Error adding employee: ${error.error.message}`);
+        } else {
+          // Fallback for non-JSON errors
+          alert(`Error adding employee: ${error.message}`);
+        }
+      }
+    );
   }
 
   // Reset the form fields
@@ -74,19 +117,24 @@ export class DashboardComponent implements OnInit {
       email: '',
       phoneNumber: '',
       title: '',
-      workingHour: '',
+      companyAdminEmail: this.employee.companyAdminEmail,
     };
   }
 
-  constructor(private userService: UserService, private companyService: CompanyService) {
+  constructor(private userService: UserService, private companyService: CompanyService, private companyEmployeeService: CompanyEmployeeService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const currentUser = this.userService.getCurrentUser();  // Make sure this correctly returns a user object if logged in
     this.isLoggedIn = !!currentUser;  // Ensures it's true if a user is found, false otherwise
+
     if (currentUser) {
       this.username = currentUser.username;
       this.userId = currentUser.id;
+
+      // Fetch employees based on companyId
+      this.fetchEmployees();
+
       // Fetch company data when the component is initialized
       this.companyService.getCompanyByUserId(this.userId).subscribe((company) => {
         // Populate form with fetched company data
@@ -110,24 +158,74 @@ export class DashboardComponent implements OnInit {
           this.hasCompany = false;  // Default to false if there's an error
         }
       );
+
+      // Check if user is Company Admin
+      await this.companyEmployeeService
+        .getCompanyAdminEmail(this.userId)
+        .toPromise()
+        .then((adminEmail) => {
+          this.employee.companyAdminEmail = adminEmail || '';
+        })
+        .catch((error) => {
+          console.error('Error fetching company admin email:', error);
+        });
     } else {
       console.log('No user logged in');  // Log if there's no user
     }
   }
 
-  // Method to handle update logic
+// Fetch employees for the company based on current user
+  fetchEmployees(): void {
+    const currentUser = this.userService.getCurrentUser(); // Get the current user
+    if (currentUser) {
+      this.companyEmployeeService.getAllEmployeesForAdmin().subscribe(
+        (response: any) => {
+          if (response && response.length > 0) {
+            this.employees = response.map((employee: any) => {
+              return {
+                employeeId: employee.user.id,  // Extract employee ID from user object
+                firstName: employee.user.firstName,  // Extract first name from user object
+                lastName: employee.user.lastName,  // Extract last name from user object
+                phoneNumber: employee.user.phoneNumber,  // Extract phone number from user object
+                companyTitle: employee.companyPosition.description,  // Extract title from companyPosition
+                email: employee.user.emailAdress,  // Extract email from user object
+                workingHour: `${employee.workingHour.startTime} - ${employee.workingHour.endTime}`,  // Format working hours
+              };
+            });
+
+            console.log('Employees loaded:', this.employees); // Log to check the structure
+            this.employeesFlag = true;   // Show the table once the data is loaded
+          } else {
+            this.employeesFlag = false;  // Show the "no employees" message if there are no employees
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching employees:', error);
+          this.employeesFlag = false;  // Handle error, show no employees message
+        }
+      );
+    }
+  }
+
+
+
+
+  // Method to handle update logic (this can be expanded later)
   updateEmployee(employee: any) {
-    return true;
+    console.log('Updating employee:', employee);
+    // Add your update logic here
   }
 
   // Method to handle delete logic
   deleteEmployee(employeeId: number) {
-    return true;
+    console.log('Deleting employee with ID:', employeeId);
+    // Add your delete logic here
   }
 
-  // Method to handle add logic
+  // Method to handle add employee logic (this can be expanded later)
   addEmployee() {
-    return true;
+    console.log('Adding new employee');
+    // Add your add employee logic here
   }
 
   // Show the form
