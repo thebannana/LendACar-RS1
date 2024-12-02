@@ -85,15 +85,52 @@
           </div>
         </div> <!-- Row END -->
 
-        <!-- Social media detail -->
-
         <!-- button -->
-        <div class="gap-3 d-md-flex justify-content-md-end text-center">
+        <div class="gap-3 d-md-flex justify-content-md-end text-center gap-3">
+          <div >
+            <button type="button" class="btn btn-primary" routerLink="/user/userProfile">Back</button>
+          </div>
           <button type="button" class="btn btn-danger btn-lg" (click)="Delete()">Delete profile</button>
           <button type="submit" class="btn btn-primary btn-lg">Update profile</button>
         </div>
       </form> <!-- Form END -->
-      <button type="button" class="btn btn-primary" routerLink="/user/userProfile">Back</button>
+
+      <!-- change password -->
+      <form #changePasswordForm="ngForm" (ngSubmit)="ChangePassword()">
+        <div class="col-xxl-6">
+          <div class="bg-secondary-soft px-4 py-5 rounded">
+            <div class="row g-3">
+              <h4 class="my-4">Change Password</h4>
+              <!-- Old password -->
+              <div class="col-md-6">
+                <label for="exampleInputPassword1" class="form-label">Current password *</label>
+                <input [type]="passwordShow ? 'text': 'password'" class="form-control" id="exampleInputPassword1"
+                       [(ngModel)]="passwordsModel.CurrentPassword" name="currentpassword">
+              </div>
+              <!-- New password -->
+              <div class="col-md-6">
+                <label for="exampleInputPassword2" class="form-label">New password *</label>
+                <input [type]="passwordShow ? 'text': 'password'" class="form-control" id="exampleInputPassword2"
+                       [(ngModel)]="passwordsModel.NewPassword" name="newpassword">
+              </div>
+              <!-- Confirm password -->
+              <div class="col-md-12">
+                <label for="exampleInputPassword3" class="form-label">Confirm Password *</label>
+                <input [type]="passwordShow ? 'text': 'password'" class="form-control" id="exampleInputPassword3"
+                     name="repeatPassword"  [(ngModel)]="repeatPassword" (input)="ComparePassword()">
+
+                <div class="d-flex" *ngIf="!passwordSame">
+                  <span class="text-danger">Password don't match</span>
+                </div>
+
+                <input [(ngModel)]="passwordShow" type="checkbox" id="check" name="check"/>
+                <label class="form-label px-2" for="check">Show password</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg mt-5">Change password</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

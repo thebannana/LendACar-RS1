@@ -17,7 +17,15 @@ export class ForgotPasswordComponent {
   private router=inject(Router);
 
   ResetPassword(){
-    this.http.put<any>(this.baseUrl+'resetpassword/reset',this.model).subscribe({
+    const passwordChangeModel={
+      EmailAddress:this.model.EmailAddress,
+      CurrentPassword:" ",
+      NewPassword:this.model.NewPassword,
+    }
+
+    console.log(passwordChangeModel);
+
+    this.http.put<any>(this.baseUrl+'resetpassword/reset',passwordChangeModel).subscribe({
       next:result=>{
         console.log(result.userType);
         alert("Password reset successful");
@@ -29,7 +37,7 @@ export class ForgotPasswordComponent {
 
 
   ComparePassword() {
-    if(this.model.Password!==this.repeatPassword)
+    if(this.model.NewPassword!==this.repeatPassword)
       this.passwordSame=false;
     else
       this.passwordSame=true;

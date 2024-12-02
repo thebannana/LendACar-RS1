@@ -13,16 +13,22 @@ import {Router} from '@angular/router';
 export class EditProfileComponent implements OnInit {
   cities:City[]=[];
   model:any={};
-      ngOnInit(): void {
+
+  passwordShow: boolean=false;
+  passwordSame: boolean=true;
+  repeatPassword:any;
+  passwordsModel:any={};
+
+  ngOnInit(): void {
         this.cityService.GetAllCities().subscribe(res=>{
           this.cities = res;
           console.log(this.cities);
           this.model = this.accountService.currentUser();
         })
       }
-      accountService=inject(UserService);
-      cityService=inject(CityService);
-      router=inject(Router);
+  accountService=inject(UserService);
+  cityService=inject(CityService);
+  router=inject(Router);
 
   Update() {
     console.log("Ovo prije update");
@@ -49,5 +55,24 @@ export class EditProfileComponent implements OnInit {
           }
       })
     }
+  }
+
+  ChangePassword() {
+    console.log(this.passwordsModel);
+
+    const passwordChangeModel={
+      EmailAddress:this.model.emailAddress,
+      CurrentPassword:this.passwordsModel.CurrentPassword,
+      NewPassword:this.passwordsModel.NewPassword,
+    }
+    console.log(passwordChangeModel);
+    this.accountService.ChangePassword(passwordChangeModel)
+  }
+
+  ComparePassword() {
+    if(this.passwordsModel.NewPassword!==this.repeatPassword)
+      this.passwordSame=false;
+    else
+      this.passwordSame=true;
   }
 }

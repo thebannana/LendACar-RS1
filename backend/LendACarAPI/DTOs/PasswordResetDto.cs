@@ -5,8 +5,9 @@ namespace LendACarAPI.DTOs
     public class PasswordResetDto
     {
         [Required]
-        public string? emailAddress { get; set; }
+        public string? EmailAddress { get; set; }
+        public string? CurrentPassword { get; set; }
         [Required]
-        public string? password { get; set; }
+        public string? NewPassword { get; set; }
     }
 }
