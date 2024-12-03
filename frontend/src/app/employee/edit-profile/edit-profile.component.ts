@@ -14,6 +14,11 @@ export class EditProfileComponent implements OnInit {
   cityService=inject(CityService);
   employeeService=inject(EmployeeService);
 
+  passwordShow: boolean=false;
+  passwordSame: boolean=true;
+  repeatPassword:any;
+  passwordsModel:any={};
+
     ngOnInit(): void {
       this.cityService.GetAllCities().subscribe(res=>{
         this.cities = res;
@@ -28,4 +33,24 @@ export class EditProfileComponent implements OnInit {
         error:err=>console.log(err)
       })
     }
+
+  ChangePassword() {
+    const passwordChangeModel={
+      EmailAddress:this.model.emailAddress,
+      CurrentPassword:this.passwordsModel.CurrentPassword,
+      NewPassword:this.passwordsModel.NewPassword,
+    }
+
+    if(!this.passwordSame){
+      alert("Passwords must match");
+    }else
+      this.employeeService.ChangePassword(passwordChangeModel);
+  }
+
+  ComparePassword() {
+    if(this.passwordsModel.NewPassword!==this.repeatPassword)
+      this.passwordSame=false;
+    else
+      this.passwordSame=true;
+  }
 }

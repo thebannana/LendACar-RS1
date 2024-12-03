@@ -16,7 +16,7 @@ namespace LendACarAPI.Endpoints
         [HttpPost("register")]
         public async Task<ActionResult<string>> RegisterEmployee([FromBody] RegisterEmployeeDto registerEmployee)
         {
-            var hmac = new HMACSHA256();
+            using var hmac = new HMACSHA256();
 
             if (await EmployeeExists(registerEmployee.Username, registerEmployee.EmailAdress)) { return BadRequest("Username or email is taken"); }
 
@@ -55,7 +55,7 @@ namespace LendACarAPI.Endpoints
             if (employee == null)
                 return Unauthorized("Invalid credentials");
 
-            var hmac = new HMACSHA256(employee.PasswordSalt);
+            using var hmac = new HMACSHA256(employee.PasswordSalt);
 
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(employeeLogin.Password));
 

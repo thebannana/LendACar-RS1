@@ -25,14 +25,20 @@ export class ForgotPasswordComponent {
 
     console.log(passwordChangeModel);
 
-    this.http.put<any>(this.baseUrl+'resetpassword/reset',passwordChangeModel).subscribe({
-      next:result=>{
-        console.log(result.userType);
-        alert("Password reset successful");
-        this.router.navigateByUrl(`/${result.userType}/login`);
-      },
-      error:error=>{console.log(error)}
-    })
+
+    if(this.passwordSame){
+      this.http.put<any>(this.baseUrl+'resetpassword/reset',passwordChangeModel).subscribe({
+        next:result=>{
+          console.log(result.userType);
+          alert("Password reset successful");
+          this.router.navigateByUrl(`/${result.userType}/login`);
+        },
+        error:error=>{console.log(error)}
+      })
+    }
+    else
+      alert("Passwords must match");
+
   }
 
 

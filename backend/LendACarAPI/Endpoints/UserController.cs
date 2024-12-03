@@ -48,7 +48,7 @@ namespace LendACarAPI.Endpoints
         {
             if (await UserExists(user.Username, user.EmailAdress)) return BadRequest("Username or email is taken");
 
-            var hmac=new HMACSHA256();
+            using var hmac=new HMACSHA256();
 
 
             var createdUser = new User()

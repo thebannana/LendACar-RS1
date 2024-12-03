@@ -12,24 +12,33 @@ namespace LendACarAPI.Endpoints
     [Route("api/[controller]")]
     [ApiController]
 
+    /// <summary>
+    /// Global controller for reseting password for both users or employees
+    /// It checks thru the email if it is a user or employee beacuse employees have @lendacar email and it is unique for every employee
+    /// </summary>
+    /// <returns>
+    /// It returns employee or user because of the frontedn routing to send the user to the correct login page
+    /// </returns>
+    /// 
+
+
     public class ResetPasswordController(ApplicationDbContext db) : ControllerBase
     {
-        /// <summary>
-        /// Global controller for reseting password for both users or employees
-        /// It checks thru the email if it is a user or employee beacuse employees have @lendacar email and it is unique for every employee
-        /// </summary>
-        /// <param name="resetDto"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>
-        /// It returns employee or user because of the frontedn routing to send the user to the correct login page
-        /// </returns>
+
         [HttpPut("reset")]
         public async Task<IActionResult> ResetPassword([FromBody] PasswordResetDto resetDto,CancellationToken cancellationToken)
         {
-            var user = await db.Users.FirstOrDefaultAsync(u => u.EmailAdress == resetDto.EmailAddress, cancellationToken);
+            User? user = null;
+            Employee? employee = null;
+
+            if (resetDto.EmailAddress.Contains("@lendacar.com"))
+                employee = await db.Employees.FirstOrDefaultAsync(e => e.EmailAdress == resetDto.EmailAddress, cancellationToken);
+            else
+                user = await db.Users.FirstOrDefaultAsync(u => u.EmailAdress == resetDto.EmailAddress, cancellationToken);
+
+
             if (user != null)
             {
-
                 var hashedPassword = GeneratePasswordHash(resetDto.NewPassword);
 
                 var salt = hashedPassword.Item1;
@@ -50,7 +59,6 @@ namespace LendACarAPI.Endpoints
                 return Ok(new { userType = "user" });
             }
 
-            var employee = await db.Employees.FirstOrDefaultAsync(e => e.EmailAdress == resetDto.EmailAddress, cancellationToken);
             if (employee != null)
             {
                 var hashedPassword = GeneratePasswordHash(resetDto.NewPassword);
@@ -72,25 +80,30 @@ namespace LendACarAPI.Endpoints
         [HttpPut("change")]
         public async Task<IActionResult> ChangePassword([FromBody] PasswordResetDto resetDto, CancellationToken cancellationToken)
         {
-            var user = await db.Users.FirstOrDefaultAsync(u => u.EmailAdress == resetDto.EmailAddress, cancellationToken);
+            User? user=null;
+            Employee? employee=null;
+
+            if(resetDto.EmailAddress.Contains("@lendacar.com"))
+                employee = await db.Employees.FirstOrDefaultAsync(e => e.EmailAdress == resetDto.EmailAddress, cancellationToken);
+            else
+                user = await db.Users.FirstOrDefaultAsync(u => u.EmailAdress == resetDto.EmailAddress, cancellationToken);
+
             if (user != null)
             {
-                //if current password isn't null that means the user is changing his password if it is null then he forgot his password
+
                 if (!string.IsNullOrWhiteSpace(resetDto.CurrentPassword))
                 {
-                    if (!ComparePasswords(resetDto.CurrentPassword, user))
+                    if (!ComparePasswords(resetDto.CurrentPassword, user.PasswordSalt,user.PasswordHash))
                         return BadRequest("Entered password doesn't match current password");
                 }
                 else
-                {
                     return BadRequest("Current password is required");
-                }
 
 
-                var hashedPassword = GeneratePasswordHash(resetDto.NewPassword);
+                var hashedNewPassword = GeneratePasswordHash(resetDto.NewPassword);
 
-                var salt = hashedPassword.Item1;
-                var hash = hashedPassword.Item2;
+                var salt = hashedNewPassword.Item1;
+                var hash = hashedNewPassword.Item2;
 
                 for (var i = 0; i < hash.Length; i++)
                 {
@@ -107,25 +120,52 @@ namespace LendACarAPI.Endpoints
                 return Ok(new { userType = "user" });
             }
 
+           
+
+            if(employee != null)
+            {
+                if(!string.IsNullOrWhiteSpace(resetDto.CurrentPassword))
+                {
+                    if (!ComparePasswords(resetDto.CurrentPassword, employee.PasswordSalt,employee.PasswordHash))
+                        return BadRequest("Entered password doesn't match current password");
+                }
+                else 
+                    return BadRequest("Current password is required");
+
+                var hashedNewPassword = GeneratePasswordHash(resetDto.NewPassword);
+
+                var salt = hashedNewPassword.Item1;
+                var hash = hashedNewPassword.Item2;
+
+                employee.PasswordHash=hash; 
+                employee.PasswordSalt = salt;
+
+                await db.SaveChangesAsync(cancellationToken);
+
+                return Ok(new { userType = "employee" });
+            }
+
             return NotFound();
         }
 
         private (byte[], byte[]) GeneratePasswordHash(string newPassword)
         {
-            var hmac=new HMACSHA256();
+            using var hmac=new HMACSHA256();
 
             var computedHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
             var salt = hmac.Key;
             return (salt, computedHash);
         }
 
-        private bool ComparePasswords(string currentPassword, User user)
+        //Function which compares is the current password in the database the same as the password which the user sent
+        private bool ComparePasswords(string currentPassword, byte[] passwordSalt, byte[] passwordHash)
         {
-            var hmac = new HMACSHA256(user.PasswordSalt);
+
+            using var hmac = new HMACSHA256(passwordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(currentPassword));
             for (var i = 0; i < computedHash.Length; i++)
             {
-                if (computedHash[i] != user.PasswordHash[i])
+                if (computedHash[i] != passwordHash[i])
                     return false;
             }
 
