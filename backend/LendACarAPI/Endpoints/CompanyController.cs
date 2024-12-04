@@ -152,22 +152,65 @@ namespace LendACarAPI.Endpoints
             return CreatedAtAction(nameof(GetCompanyByUserId), new { userId = company.UserId }, company);
         }
 
-
         [HttpDelete("deleteByUser/{userId}")]
         public async Task<IActionResult> DeleteCompanyByUserId(int userId)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.UserId == userId);
+            // Fetch the company associated with the user/owner
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (company == null)
             {
                 return NotFound("Company not found for this user.");
             }
 
+            int companyId = company.Id;
+
+            // Fetch related CompanyEmployees
+            var companyEmployees = await _context.CompanyEmployees
+                .Where(ce => ce.CompanyId == companyId)
+                .ToListAsync();
+
+            // Step 1: Delete WorkingHours related to CompanyEmployee
+            var workingHoursIds = companyEmployees.Select(ce => ce.WorkingHourId).ToList();
+            var workingHoursToDelete = await _context.WorkingHours
+                .Where(wh => workingHoursIds.Contains(wh.Id))
+                .ToListAsync();
+
+            _context.WorkingHours.RemoveRange(workingHoursToDelete);
+
+            // Step 2: Delete CompanyPositions related to CompanyEmployee
+            var companyPositionIds = companyEmployees.Select(ce => ce.CompanyPositionId).ToList();
+            var companyPositionsToDelete = await _context.CompanyPositions
+                .Where(cp => companyPositionIds.Contains(cp.Id))
+                .ToListAsync();
+
+            _context.CompanyPositions.RemoveRange(companyPositionsToDelete);
+
+            // Step 3: Delete all users related to the company, excluding the owner
+            var usersToDelete = companyEmployees
+                .Where(ce => ce.UserId != userId) // Exclude the owner
+                .Select(ce => ce.User)
+                .ToList();
+
+            _context.Users.RemoveRange(usersToDelete);
+
+            // Step 4: Delete CompanyEmployees
+            _context.CompanyEmployees.RemoveRange(companyEmployees);
+
+            // Step 5: Delete the company itself
             _context.Companies.Remove(company);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
+
+
+
+
+
 
         [HttpPut("updateByUser/{userId}")]
         public async Task<IActionResult> UpdateCompanyByUserId(int userId, [FromForm] CompanyUpdateRequest request)

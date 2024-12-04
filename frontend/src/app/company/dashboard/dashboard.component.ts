@@ -33,8 +33,8 @@ export class DashboardComponent implements OnInit {
   isEmployeeFormVisible = false;
   hasEmployees = false;
   employeeSectionFlag = false;
-  employeesTableFlag = false; // A flag to toggle the visibility of the employee table
   employees: employees[] = [];
+  isUpdating: boolean = false;
 
   employee = {
     firstName: '',
@@ -45,18 +45,17 @@ export class DashboardComponent implements OnInit {
     companyAdminEmail: '',
   };
 
-  // Show the form when the "Add Employee" button is clicked
+// Add employee form visibility control
   showEmployeeForm() {
-    this.isEmployeeFormVisible = true;
-    this.hasEmployees = true;
-
+    this.isEmployeeFormVisible = true; // Show the form
+    this.hasEmployees = false; // Hide the "No employees" message if any
   }
 
-  // Hide the form and reset fields when "Cancel" is clicked
+// Hide the form and reset fields when "Cancel" is clicked
   cancelEmployeeForm() {
-    this.isEmployeeFormVisible = false;
-    this.hasEmployees = false;
-    this.resetEmployeeForm();
+    this.isEmployeeFormVisible = false; // Hide the form
+    this.hasEmployees = this.employees.length > 0; // Show the employee table if there are employees
+    this.resetEmployeeForm(); // Reset form fields
   }
 
   submitEmployeeForm() {
@@ -93,6 +92,7 @@ export class DashboardComponent implements OnInit {
         console.log('Employee added successfully:', response);
         this.isEmployeeFormVisible = false;
         this.resetEmployeeForm();
+        this.fetchEmployees();
       },
       (error) => {
         console.error('Error adding employee:', error);
@@ -111,13 +111,14 @@ export class DashboardComponent implements OnInit {
 
   // Reset the form fields
   resetEmployeeForm() {
+    const adminEmail = this.employee.companyAdminEmail; // Preserve value
     this.employee = {
       firstName: '',
       lastName: '',
       email: '',
       phoneNumber: '',
       title: '',
-      companyAdminEmail: this.employee.companyAdminEmail,
+      companyAdminEmail: adminEmail, // Restore after reset
     };
   }
 
@@ -165,6 +166,7 @@ export class DashboardComponent implements OnInit {
         .toPromise()
         .then((adminEmail) => {
           this.employee.companyAdminEmail = adminEmail || '';
+          console.log(adminEmail);
         })
         .catch((error) => {
           console.error('Error fetching company admin email:', error);
@@ -174,58 +176,144 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-// Fetch employees for the company based on current user
+// Fetch employees for the company based on the current user
   fetchEmployees(): void {
     const currentUser = this.userService.getCurrentUser(); // Get the current user
     if (currentUser) {
       this.companyEmployeeService.getAllEmployeesForAdmin().subscribe(
         (response: any) => {
           if (response && response.length > 0) {
-            this.employees = response.map((employee: any) => {
-              return {
-                employeeId: employee.user.id,  // Extract employee ID from user object
-                firstName: employee.user.firstName,  // Extract first name from user object
-                lastName: employee.user.lastName,  // Extract last name from user object
-                phoneNumber: employee.user.phoneNumber,  // Extract phone number from user object
-                companyTitle: employee.companyPosition.description,  // Extract title from companyPosition
-                email: employee.user.emailAdress,  // Extract email from user object
-                workingHour: `${employee.workingHour.startTime} - ${employee.workingHour.endTime}`,  // Format working hours
-              };
-            });
+            this.employees = response.map((employee: any) => ({
+              employeeId: employee.user.id,
+              firstName: employee.user.firstName,
+              lastName: employee.user.lastName,
+              phoneNumber: employee.user.phoneNumber,
+              companyTitle: employee.companyPosition?.name || 'N/A',
+              email: employee.user.emailAdress,
+              workingHour: employee.workingHour
+                ? `${employee.workingHour.startTime} - ${employee.workingHour.endTime}`
+                : 'N/A',
+            }));
 
-            console.log('Employees loaded:', this.employees); // Log to check the structure
-            this.employeesFlag = true;   // Show the table once the data is loaded
+            this.employeesFlag = true;   // Show employee table
+            this.hasEmployees = true;    // Indicate employees exist
           } else {
-            this.employeesFlag = false;  // Show the "no employees" message if there are no employees
+            this.handleNoEmployees();    // Handle empty employee response
           }
         },
         (error: any) => {
           console.error('Error fetching employees:', error);
-          this.employeesFlag = false;  // Handle error, show no employees message
+          if (error.status === 404) {
+            this.handleNoEmployees();    // Show "no employees" message on 404
+          } else {
+            this.employeesFlag = false;  // Handle other errors
+          }
         }
       );
     }
   }
 
+// Helper method to handle no employees found
+  private handleNoEmployees(): void {
+    this.employees = [];               // Clear the employee array
+    this.employeesFlag = false;        // Indicate no employee table
+    this.hasEmployees = false;         // Indicate no employees available
+  }
+
+  employeeIdToUpdate: number = 0;
+
+// Method to handle update logic (this will fetch data for a specific employee by ID)
+  updateEmployee(employeeId: number): void {
+    // Store the employeeId for later use
+    this.employeeIdToUpdate = employeeId;
+    // Use the service to fetch employee data by ID
+    this.companyEmployeeService.getEmployeeForAdmin(employeeId).subscribe(
+      (employeeData: any) => {
+        // Assign the fetched data to the employee object
+        // Assuming employeeData.user contains the details you want to populate in the form
+        this.employee = {
+          firstName: employeeData.user.firstName,
+          lastName: employeeData.user.lastName,
+          email: employeeData.user.emailAdress,
+          phoneNumber: employeeData.user.phoneNumber,
+          title: employeeData.companyPosition.name,
+          companyAdminEmail: this.employee.companyAdminEmail // Assuming this field is directly available
+        };
+
+        console.log('Fetched employee data:', employeeData); // Check if data is correct
+        this.isUpdating = true; // Set flag to show the update form
+      },
+      (error: any) => {
+        console.error('Error fetching employee data:', error);
+      }
+    );
+  }
+
+  updateEmployeeForm(): void {
+    const currentUser = this.userService.getCurrentUser();
+    // Fetch the company admin email using the service
+    // @ts-ignore
+    this.companyEmployeeService.getCompanyAdminEmail(currentUser.id).subscribe(
+      (companyAdminEmail: string | null) => {
+        const updatedEmployee = {
+          ...this.employee,  // Spread all employee data
+          companyAdminEmail: companyAdminEmail,  // Add the admin email for authorization
+          userId: this.employeeIdToUpdate  // Add the employee ID from the stored variable
+        };
+
+        console.log(updatedEmployee); // Log the updated employee to verify that the ID and email are included
+
+        // Call the updateEmployee service with the updated employee data
+        this.companyEmployeeService.updateEmployee(updatedEmployee).subscribe(
+          (response: any) => {
+            console.log('Employee updated successfully:', response);
+            this.isUpdating = false; // Close the update form
+            this.fetchEmployees(); // Refresh the employee list
+            this.employeeIdToUpdate = 0; // Reset the employeeIdToUpdate variable
+          },
+          (error: any) => {
+            console.error('Error updating employee:', error);
+          }
+        );
+      },
+      (error: any) => {
+        console.error('Error fetching company admin email:', error);
+      }
+    );
+  }
 
 
-
-  // Method to handle update logic (this can be expanded later)
-  updateEmployee(employee: any) {
-    console.log('Updating employee:', employee);
-    // Add your update logic here
+  cancelUpdateEmployeeForm(): void {
+    this.isUpdating = false; // Hide the form without submitting
+    this.resetEmployeeForm();
   }
 
   // Method to handle delete logic
-  deleteEmployee(employeeId: number) {
+  deleteEmployee(employeeId: number): void {
     console.log('Deleting employee with ID:', employeeId);
-    // Add your delete logic here
+
+    this.companyEmployeeService.deleteEmployee(employeeId).subscribe(
+      (response) => {
+        console.log('Employee deleted:', response);
+        this.fetchEmployees();
+        // Option 1: Remove the employee from the local array
+        this.employees = this.employees.filter(employee => employee.employeeId !== employeeId);
+
+        // Check if the employees array is empty
+        if (this.employees.length === 0) {
+          this.employeesFlag = false;  // No employees left, show "no employees" message
+        }
+      },
+      (error) => {
+        console.error('Error deleting employee:', error);
+      }
+    );
   }
 
-  // Method to handle add employee logic (this can be expanded later)
+// Method to handle add employee logic (display the form)
   addEmployee() {
-    console.log('Adding new employee');
-    // Add your add employee logic here
+    this.isEmployeeFormVisible = true; // Show the form
+    this.hasEmployees = false; // Hide the table
   }
 
   // Show the form

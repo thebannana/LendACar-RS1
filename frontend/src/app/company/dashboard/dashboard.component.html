@@ -157,8 +157,102 @@
           </div>
         </form>
       </div>
-      <!-- Employee Table -->
-        <div *ngIf="activeLink === 'employees' && isLoggedIn && hasCompany && employeesFlag" class="table-responsive">
+
+        <div *ngIf="isUpdating" class="update-employee-form">
+          <h3>Update Employee Information</h3>
+          <form (ngSubmit)="updateEmployeeForm()">
+            <!-- First Name -->
+            <div class="form-group mb-3">
+              <label for="updateEmployeeFirstName">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="updateEmployeeFirstName"
+                [(ngModel)]="employee.firstName"
+                name="updateFirstName"
+                required
+              />
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group mb-3">
+              <label for="updateEmployeeLastName">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="updateEmployeeLastName"
+                [(ngModel)]="employee.lastName"
+                name="updateLastName"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+              <label for="updateEmployeeEmail">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="updateEmployeeEmail"
+                [(ngModel)]="employee.email"
+                name="updateEmail"
+                required
+              />
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group mb-3">
+              <label for="updateEmployeePhone">Phone Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="updateEmployeePhone"
+                [(ngModel)]="employee.phoneNumber"
+                name="updatePhoneNumber"
+                required
+              />
+            </div>
+
+            <!-- Title -->
+            <div class="form-group mb-3">
+              <label for="updateEmployeeTitle">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="updateEmployeeTitle"
+                [(ngModel)]="employee.title"
+                name="updateTitle"
+                required
+              />
+            </div>
+
+            <!-- Company Admin Email (Read-Only) -->
+            <div class="form-group mb-3">
+              <label for="updateCompanyAdminEmail">Company Admin Email</label>
+              <input
+                type="email"
+                class="form-control"
+                style="color: gray"
+                id="updateCompanyAdminEmail"
+                [(ngModel)]="employee.companyAdminEmail"
+                name="updateCompanyAdminEmail"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-primary buttonForm">Update</button>
+              <button type="button" (click)="cancelUpdateEmployeeForm()" class="btn btn-danger buttonForm">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Employee Table -->
+        <div *ngIf="activeLink === 'employees' && isLoggedIn && hasCompany && employeesFlag && hasEmployees && !isUpdating" class="table-responsive">
           <table class="table table-dark table-striped table-hover">
             <thead>
             <tr>
@@ -183,7 +277,7 @@
               <td>{{ employee.email }}</td>
               <td>{{ employee.workingHour }}</td>
               <td>
-                <button type="button" class="btn btn-warning btn-sm me-2" (click)="updateEmployee(employee)">Update</button>
+                <button type="button" class="btn btn-warning btn-sm me-2" (click)="updateEmployee(employee.employeeId)">Update</button>
                 <button type="button" class="btn btn-danger btn-sm" (click)="deleteEmployee(employee.employeeId)">Delete</button>
               </td>
             </tr>
@@ -194,10 +288,11 @@
 
 
       <!-- Message if no employees are present -->
-      <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="activeLink === 'employees' && !employeesFlag && isLoggedIn && hasCompany && !hasEmployees">
-        <h1>No employees found.</h1>
-        <button type="button" class="btn btn-primary" (click)="showEmployeeForm()" >Add employee</button>
-      </div>
+        <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="activeLink === 'employees' && !employeesFlag && isLoggedIn && hasCompany && !isEmployeeFormVisible">
+          <h1>No employees found.</h1>
+          <button type="button" class="btn btn-primary" (click)="showEmployeeForm()">Add employee</button>
+        </div>
+
       </ng-container>
       <div *ngIf="!isLoggedIn; else createCompanySection">
         <p>You need to be logged in to create a company.</p>

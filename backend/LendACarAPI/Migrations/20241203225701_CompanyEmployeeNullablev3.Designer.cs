@@ -4,6 +4,7 @@ using LendACarAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LendACarAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203225701_CompanyEmployeeNullablev3")]
+    partial class CompanyEmployeeNullablev3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,7 +82,7 @@ namespace LendACarAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -91,19 +94,21 @@ namespace LendACarAPI.Migrations
 
             modelBuilder.Entity("LendACarAPI.Data.Models.CompanyEmployee", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("CompanyAdminEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyPositionId")
+                    b.Property<int?>("CompanyPositionId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkingHourId")
+                    b.Property<int?>("WorkingHourId")
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
@@ -565,8 +570,7 @@ namespace LendACarAPI.Migrations
                     b.HasOne("LendACarAPI.Data.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });
@@ -594,8 +598,7 @@ namespace LendACarAPI.Migrations
                     b.HasOne("LendACarAPI.Data.Models.WorkingHour", "WorkingHour")
                         .WithMany()
                         .HasForeignKey("WorkingHourId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Company");
 

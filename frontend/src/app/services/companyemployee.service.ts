@@ -61,4 +61,16 @@ export class CompanyEmployeeService {
     });
   }
 
+  getEmployeeForAdmin(userId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:7000/api/CompanyEmployee/get/${userId}`)
+  }
+
+  deleteEmployee(userId: number): Observable<any> {
+    return this.http.delete(`http://localhost:7000/api/CompanyEmployee/delete/${userId}`);
+  }
+
+  updateEmployee(employee: any): Observable<any> {
+    return this.http.put(`http://localhost:7000/api/CompanyEmployee/UpdateEmployee`, employee);
+  }
+
 }

@@ -41,6 +41,20 @@ namespace LendACarAPI.Data
             modelBuilder.Entity<VehicleReview>()
                 .HasKey(x => new { x.ReviewerId, x.VehicleId });
 
+            // Cascade delete for the relationship between User and CompanyEmployee
+            modelBuilder.Entity<CompanyEmployee>()
+                .HasOne(ce => ce.User)
+                .WithOne()  // If it's a one-to-one relationship, adjust as necessary
+                .HasForeignKey<CompanyEmployee>(ce => ce.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Cascade delete for the relationship between Company and CompanyEmployee
+            modelBuilder.Entity<CompanyEmployee>()
+                .HasOne(ce => ce.Company)
+                .WithMany()  // If it's a one-to-many relationship, adjust as necessary
+                .HasForeignKey(ce => ce.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Person>().UseTpcMappingStrategy();

@@ -45,7 +45,7 @@ namespace LendACarAPI.Endpoints
 
             if (string.IsNullOrEmpty(currentUserEmail))
             {
-                return Unauthorized("User is not authenticated.");
+                return Unauthorized(new { message = "User is not authenticated." });
             }
 
             // Step 1: Find the company admin using their email
@@ -55,7 +55,7 @@ namespace LendACarAPI.Endpoints
 
             if (companyAdmin == null)
             {
-                return NotFound("Company admin not found.");
+                return NotFound(new { message = "Company admin not found." });
             }
 
             // Step 2: Get the company ID from the admin
@@ -72,12 +72,52 @@ namespace LendACarAPI.Endpoints
 
             if (companyEmployees == null || !companyEmployees.Any())
             {
-                return NotFound("No employees found for this company.");
+                return NotFound(new { message = "No employees found for this company." });
             }
 
             return Ok(companyEmployees);
         }
 
+        [HttpDelete("delete/{userId}")]
+        public async Task<IActionResult> DeleteEmployee(int userId)
+        {
+            // Step 1: Find the employee in the CompanyEmployee table
+            var companyEmployee = await _context.CompanyEmployees
+                .FirstOrDefaultAsync(ce => ce.UserId == userId);
+
+            if (companyEmployee == null)
+            {
+                return NotFound(new { message = "Employee not found in CompanyEmployee table." });
+            }
+
+            // Step 2: Remove the employee from the CompanyEmployee table
+            _context.CompanyEmployees.Remove(companyEmployee);
+
+            // Step 3: Find and delete the employee's working hours
+            var workingHours = await _context.WorkingHours
+                .FirstOrDefaultAsync(wh => wh.Id == companyEmployee.WorkingHourId);
+
+            if (workingHours != null)
+            {
+                _context.WorkingHours.Remove(workingHours);
+            }
+
+            // Step 4: Find and delete the user from the User table
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found in User table." });
+            }
+
+            _context.Users.Remove(user);
+
+            // Step 5: Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Employee successfully deleted." });
+        }
 
 
         [HttpPost("add")]
@@ -168,6 +208,59 @@ namespace LendACarAPI.Endpoints
             return Ok(new { message = "Employee added successfully." });
         }
 
+        [HttpPut("UpdateEmployee")]
+        public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeDto employeeDto)
+        {
+            if (employeeDto == null)
+            {
+                return BadRequest(new { message = "Invalid data." });
+            }
+
+            // If any of the required fields are missing, this can also be a source of a BadRequest error
+            if (string.IsNullOrEmpty(employeeDto.FirstName) || string.IsNullOrEmpty(employeeDto.LastName) || string.IsNullOrEmpty(employeeDto.Email))
+            {
+                return BadRequest(new { message = "Required fields are missing." });
+            }
+
+            // Authorization logic and employee update
+            var currentUserEmail = employeeDto.CompanyAdminEmail;  // Make sure this value is being passed correctly
+
+            if (currentUserEmail != employeeDto.CompanyAdminEmail)
+            {
+                return Unauthorized(new { message = "You are not authorized to update this employee." });
+            }
+
+            var employee = await _context.CompanyEmployees
+                                         .Include(e => e.User)
+                                         .Include(e => e.CompanyPosition)  // Ensure CompanyPosition is loaded
+                                         .FirstOrDefaultAsync(e => e.UserId == employeeDto.UserId);
+
+            if (employee == null)
+            {
+                return NotFound(new { message = "Employee not found." });
+            }
+
+            // Ensure that CompanyPosition is not null before updating it
+            if (employee.CompanyPosition != null)
+            {
+                employee.CompanyPosition.Name = employeeDto.Title;  // Update title if CompanyPosition exists
+            }
+            else
+            {
+                return BadRequest(new { message = "Employee does not have a valid company position." });
+            }
+
+            // Update other employee information
+            employee.User.FirstName = employeeDto.FirstName;
+            employee.User.LastName = employeeDto.LastName;
+            employee.User.EmailAdress = employeeDto.Email;
+            employee.User.PhoneNumber = employeeDto.PhoneNumber;
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Employee updated successfully." });
+        }
 
 
         [HttpGet("admin-email/{userId}")]
