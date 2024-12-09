@@ -11,4 +11,5 @@ public class Country
 
     // public List<City> Cities{ get; set; }
 
+    // dodati string Flag sa URL-om do zastave drzave
 }

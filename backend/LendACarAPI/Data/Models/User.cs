@@ -26,7 +26,13 @@ namespace LendACarAPI.Data.Models
         public string Username { get; set; }
         public DateTime CreatedDate { get; set; }
         public double AverageRating { get; set; } = 0.0;
+        [Required]
+        public bool IsVerified { get; set; } = false;
+        [Required]
+        public bool IsBanned { get; set; } = false;
 
+
+        // Najvjerovatnije cemo koristiti string sa URL-om koji prikazuje sliku vozacke dozvole
         public DriversLicense DriversLicense { get; set; }
 
     }

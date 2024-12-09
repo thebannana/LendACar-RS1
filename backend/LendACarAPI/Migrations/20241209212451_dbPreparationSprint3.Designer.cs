@@ -4,6 +4,7 @@ using LendACarAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LendACarAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241209212451_dbPreparationSprint3")]
+    partial class dbPreparationSprint3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,6 +98,7 @@ namespace LendACarAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CompanyAdminEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CompanyId")
@@ -610,8 +614,8 @@ namespace LendACarAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("LendACarAPI.Data.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("LendACarAPI.Data.Models.CompanyEmployee", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
