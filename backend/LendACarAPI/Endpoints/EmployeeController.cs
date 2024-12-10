@@ -33,7 +33,7 @@ namespace LendACarAPI.Endpoints
                 WorkingHourId = registerEmployee.WorkingHourId,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerEmployee.Password)),
                 PasswordSalt = hmac.Key,
-                DateOfHire = new DateOnly(2024, 11, 25)
+                DateOfHire = DateOnly.Parse(registerEmployee.HireDate)
             };
 
             db.Employees.Add(employee);
@@ -137,6 +137,31 @@ namespace LendACarAPI.Endpoints
 
             return Ok(returnEmployee);
 
+        }
+
+        [HttpGet("getAll")]
+        public async Task<ActionResult> GetAllEmployees(CancellationToken cancellationToken)
+        {
+            var employees = await db.Employees
+                .Select(e=>new EmployeeDto
+                {
+                    Id=e.Id,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    PhoneNumber = e.PhoneNumber,
+                    BirthDate = e.BirthDate.ToString("dd.MM.yyyy"),
+                    City = e.City,
+                    CityId = e.CityId,
+                    EmailAddress = e.EmailAdress,
+                    Username = e.Username,
+                    JobTitle = e.JobTitle,
+                    WorkingHour = e.WorkingHour,
+                    WorkingHourId = e.WorkingHourId,
+
+                })
+                .ToArrayAsync(cancellationToken);
+            
+            return Ok(employees);
         }
         
 
