@@ -1,0 +1,88 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Employee Registration</h2>
+  <form #employeeForm="ngForm" (ngSubmit)="register(employeeForm)">
+
+    <div class="form-group mb-3">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" class="form-control" name="firstName" (input)="generateEmail()" [(ngModel)]="employee.firstName" required  />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['firstName']?.errors?.['required']">
+        First name is required.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" class="form-control" name="lastName" (input)="generateEmail()" [(ngModel)]="employee.lastName" required />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['lastName']?.errors?.['required']">
+        Last name is required.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="email">Email</label>
+      <input type="email" disabled id="email" class="form-control" name="email" [(ngModel)]="employee.emailAdress" required email />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['email']?.errors?.['required']">
+        Email is required.
+      </small>
+      <small class="text-danger" *ngIf="employeeForm.controls['email']?.errors?.['email']">
+        Enter a valid email address.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="username">Username</label>
+      <input type="text" id="username" class="form-control" name="username" [(ngModel)]="employee.username" required />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['username']?.errors?.['required']">
+        Username is required.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" class="form-control" name="phone" [(ngModel)]="employee.phoneNumber" required pattern="^\+?[0-9\s\-()]*$" />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['phone']?.errors?.['required']">
+        Phone number is required.
+      </small>
+      <small class="text-danger" *ngIf="employeeForm.controls['phone']?.errors?.['pattern']">
+        Enter a valid phone number.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="city">City</label>
+      <select  class="form-select" aria-label="Default select example" name="city" [(ngModel)]="employee.cityId">
+        @for (city of cities; track city.id){
+          <option  id="city" value="{{city.id}}">{{city.name}}, {{city.country.name}}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="birthDate">Birth Date</label>
+      <input type="date" id="birthDate" class="form-control" name="birhDate" [(ngModel)]="employee.birthDate" required />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['birthDate']?.errors?.['required']">
+        Birth date is required.
+      </small>
+    </div>
+
+
+
+    <div class="form-group mb-3">
+      <label for="jobTitle">Job Title</label>
+      <input type="text" id="jobTitle" class="form-control" name="jobTitle" [(ngModel)]="employee.jobTitle" required />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['jobTitle']?.errors?.['required']">
+        Job title is required.
+      </small>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="hireDate">Hire Date</label>
+      <input type="date" id="hireDate" class="form-control" name="hireDate" [(ngModel)]="employee.hireDate" required />
+      <small class="text-danger" *ngIf="employeeForm.submitted && employeeForm.controls['hireDate']?.errors?.['required']">
+        Hire date is required.
+      </small>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Register</button>
+  </form>
+</div>

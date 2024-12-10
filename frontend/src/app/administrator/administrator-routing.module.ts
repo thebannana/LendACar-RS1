@@ -8,17 +8,24 @@ import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.
 import {AdminEmployeeOverviewComponent} from './admin-employee-overview/admin-employee-overview.component';
 import { VehicleOverviewComponent } from './vehicle-overview/vehicle-overview.component';
 import { UserOverviewComponent } from './user-overview/user-overview.component';
+import {RegisterComponent} from './register-employee/register.component';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
   {path:'',redirectTo:'login' ,pathMatch:'full'},
   {path:'login', component: AdminLoginComponent},
-  {path:'dashboard', component: AdminDashboardComponent},
-  {path:'profileOverview', component: AdminProfileOverviewComponent},
-  {path:'profileEdit',component:AdminEditOwnProfileComponent},
-  {path:'vehicleCategories',component: VehicleCategoriesComponent},
-  {path:'employeeOverview',component: AdminEmployeeOverviewComponent},
-  {path:'vehicleOverview',component: VehicleOverviewComponent},
-  {path:'userOverview',component: UserOverviewComponent},
+  {path:'dashboard', component: AdminDashboardComponent,children:[
+      {path:'',redirectTo:'home',pathMatch:'full'},
+      {path:'profileOverview', component: AdminProfileOverviewComponent},
+      {path:'profileEdit',component:AdminEditOwnProfileComponent},
+      {path:'vehicleCategories',component: VehicleCategoriesComponent},
+      {path:'employeeOverview',component: AdminEmployeeOverviewComponent},
+      {path:'vehicleOverview',component: VehicleOverviewComponent},
+      {path:'userOverview',component: UserOverviewComponent},
+      {path:'home',component: HomeComponent}
+    ]},
+
+  {path:'register',component: RegisterComponent},
 ];
 
 @NgModule({

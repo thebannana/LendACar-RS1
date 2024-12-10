@@ -7,4 +7,5 @@ export interface RegisterUserDto {
   emailAdress: string;
   username: string;
   password: string;
+  workingHourId:number;
 }
