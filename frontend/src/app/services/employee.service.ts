@@ -15,6 +15,10 @@ export class EmployeeService {
   currentEmployee=signal<EmployeeDto | null>(null);
   private router=inject(Router);
 
+  Register(model:EmployeeDto){
+    return this.http.post(this.baseUrl+'employee/register',model);
+  }
+
   Login(model:any){
     return this.http.post<EmployeeDto>(this.baseUrl+'employee/login',model).pipe(
       map(employee=>{
@@ -55,5 +59,8 @@ export class EmployeeService {
     )
   }
 
+  GetAllEmployees(){
+    return this.http.get<EmployeeDto[]>(this.baseUrl+'employee/getAll')
+  }
 
 }

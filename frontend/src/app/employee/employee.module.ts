@@ -14,7 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     LoginComponent,
     DashboardComponent,
     ProfileOverviewComponent,
-    EditProfileComponent
+    EditProfileComponent,
   ],
   imports: [
     CommonModule,

@@ -7,13 +7,5 @@ import {Router} from '@angular/router';
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
-export class AdminDashboardComponent {
-  adminService=inject(AdminService);
-  router=inject(Router);
-
-  logout() {
-    this.adminService.currentAdmin.set(null);
-    localStorage.removeItem('admin');
-    void this.router.navigateByUrl('/admin/login');
-  }
+export class AdminDashboardComponent{
 }

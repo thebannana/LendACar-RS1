@@ -33,5 +33,7 @@ namespace LendACarAPI.DTOs
 
         public int WorkingHourId { get; set; }
 
+        public string? HireDate { get; set; }
+
     }
 }

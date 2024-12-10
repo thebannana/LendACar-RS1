@@ -11,6 +11,9 @@ import { VehicleCategoriesComponent } from './vehicle-category/vehicle-category.
 import { AdminEmployeeOverviewComponent } from './admin-employee-overview/admin-employee-overview.component';
 import { VehicleOverviewComponent } from './vehicle-overview/vehicle-overview.component';
 import { UserOverviewComponent } from './user-overview/user-overview.component';
+import {RegisterComponent} from './register-employee/register.component';
+import { NavComponent } from './nav/nav.component';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -23,13 +26,16 @@ import { UserOverviewComponent } from './user-overview/user-overview.component';
     VehicleCategoriesComponent,
     AdminEmployeeOverviewComponent,
     VehicleOverviewComponent,
-    UserOverviewComponent
+    UserOverviewComponent,
+    RegisterComponent,
+    NavComponent,
+    HomeComponent
   ],
-  imports: [
-    CommonModule,
-    AdministratorRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        AdministratorRoutingModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class AdministratorModule { }

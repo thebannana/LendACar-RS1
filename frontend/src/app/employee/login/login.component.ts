@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {EmployeeService} from '../../services/employee.service';
 import {Router} from '@angular/router';
 
@@ -7,7 +7,14 @@ import {Router} from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
+
+  ngOnInit(): void {
+      let employee=localStorage.getItem('employee');
+      if(employee){
+        this.router.navigateByUrl('/employee/dashboard');
+      }
+  }
   passwordShow:boolean = false;
 
   employeeService=inject(EmployeeService);
