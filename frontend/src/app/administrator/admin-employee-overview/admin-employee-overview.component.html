@@ -1,7 +1,58 @@
-<body>
-
-
-    <div class="container d-flex align-items-center">
-        <button type="button" class="btn btn-primary btn-sm" routerLink="/admin/dashboard">Back</button>
+<section class="intro">
+  <h2 class="text-center">Employee Information</h2>
+  <div class="bg-image h-100" >
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+<!--            <div class="container my-2">
+              <input type="text" placeholder="Search employee" id="empSearch" style="width: 20%">
+              <button class="btn btn-default btn-outline-light mx-3">Search</button>
+            </div>-->
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                     style="position: relative">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Id</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Phone number</th>
+                      <th>Birth date</th>
+                      <th>City</th>
+                      <th>Username</th>
+                      <th>Job title</th>
+                      <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let employee of employees; let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{ employee.id }}</td>
+                      <td>{{ employee.firstName }}</td>
+                      <td>{{ employee.lastName }}</td>
+                      <td>{{ employee.emailAddress }}</td>
+                      <td>{{ employee.phoneNumber }}</td>
+                      <td>{{employee.birthDate}}</td>
+                      <td>{{employee.city.name}}</td>
+                      <td>{{employee.username}}</td>
+                      <td>{{ employee.jobTitle }}</td>
+                      <td><button class="btn btn-outline-light mx-1 " value="{{employee.id}}" (click)="EditEmployee($event)">Edit</button>
+                        <button class="btn btn-outline-danger" value="{{employee.id}}" (click)="DeleteEmployee($event)">Delete</button></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-outline-light btn-secondary my-3" routerLink="/admin/register">Add employee</button>
+      </div>
     </div>
-</body>
+  </div>
+</section>
