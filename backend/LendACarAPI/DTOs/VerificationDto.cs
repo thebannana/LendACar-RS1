@@ -1,28 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using LendACarAPI.Data.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LendACarAPI.Data.Models
+namespace LendACarAPI.DTOs
 {
-
-
-    public class VerificationRequest
+    public class VerificationDto
     {
-        [Key]
         public int Id { get; set; }
         [Required]
         public DateTime RequestDate { get; set; }
 
-
-        [ForeignKey(nameof(User))]
         [Required]
         public int UserId { get; set; }
-        public User? User { get; set; }
 
         public string? RequestComment { get; set; } // mogucnost useru da ostavi komentar koji ce biti vidljiv uposleniku
 
-        [ForeignKey(nameof(Employee))]
         public int EmployeeId { get; set; }
-        public Employee? Employee { get; set; }
 
     }
 }

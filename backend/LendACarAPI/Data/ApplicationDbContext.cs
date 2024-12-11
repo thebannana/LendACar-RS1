@@ -30,6 +30,7 @@ namespace LendACarAPI.Data
         public DbSet<DriversLicense> DriversLicense { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<VerificationRequest> VerificationRequests { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
