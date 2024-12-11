@@ -1,5 +1,5 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+LendACar is an in-the-works innovative application that facilitates vehicle rentals from licensed companies or individual users, creating a marketplace similar to OLX but tailored specifically for renting vehicles. The platform allows users to enter their desired pickup location, optional drop-off location, and rental period through an intuitive calendar interface. Based on these inputs, the application generates personalized rental offers. Users can further refine these offers using advanced filters to select the vehicle type, brand, model, and intended use.
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
